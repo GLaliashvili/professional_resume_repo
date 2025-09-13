@@ -46,10 +46,10 @@ export function Resume() {
         </div>
       </div>
 
-      <Separator className="mb-8" />
+      <Separator className="mb-16" />
 
       {/* Professional Summary */}
-      <section className="mb-8">
+      <section className="mb-16">
         <h2 className="mb-4 text-primary">Summary</h2>
         <p className="text-muted-foreground leading-relaxed">
           I am a product manager with 12+ years of experience building and growing SaaS, marketplaces, and consumer apps from the ground up.
@@ -60,7 +60,7 @@ export function Resume() {
       </section>
 
       {/* Work Experience */}
-      <section className="mb-8">
+      <section className="mb-16">
         <h2 className="mb-6 text-primary">Experience</h2>
         
         <div className="space-y-6">
@@ -223,7 +223,7 @@ export function Resume() {
       </section>
 
       {/* Education */}
-      <section className="mb-8">
+      <section className="mb-16">
         <h2 className="mb-6 text-primary">Education</h2>
         
         <div className="space-y-4">
@@ -250,7 +250,7 @@ export function Resume() {
       </section>
 
       {/* Licenses & Certifications */}
-      <section className="mb-8">
+      <section className="mb-16">
         <h2 className="mb-6 text-primary">Certifications</h2>
         <div className="space-y-4">
           
@@ -430,7 +430,7 @@ export function Resume() {
       </section>
       */}
 
-      <Separator className="mb-8" />
+      <Separator className="mb-16" />
 
       {/* Footer */}
       <footer className="text-center">
