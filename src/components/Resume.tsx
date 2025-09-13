@@ -66,10 +66,10 @@ export function Resume() {
         <div className="space-y-6">
          
           {/* Scaler */}
-          <Card className="p-6 relative">
-            <CompanyLogo companyName="Scaler" logoUrl="https://i.imgur.com/K3u6SHN.png" companyUrl="https://scalerglobal.com" />
-            <div className="mb-0.5">
+          <Card className="p-6">
+            <div className="flex justify-between items-start mb-0.5">
               <h3 className="text-primary">Scaler</h3>
+              <CompanyLogo companyName="Scaler" logoUrl="https://i.imgur.com/K3u6SHN.png" companyUrl="https://scalerglobal.com" />
             </div>
             <div className="flex justify-between items-start mb-0">
               <div>
@@ -86,10 +86,10 @@ export function Resume() {
           </Card>
 
           {/* Buynomics */}
-          <Card className="p-6 relative">
-            <CompanyLogo companyName="Buynomics" logoUrl="https://i.imgur.com/YRs5baQ.jpeg" companyUrl="https://buynomics.com" />
-            <div className="mb-0.5">
+          <Card className="p-6">
+            <div className="flex justify-between items-start mb-0.5">
               <h3 className="text-primary">Buynomics</h3>
+              <CompanyLogo companyName="Buynomics" logoUrl="https://i.imgur.com/YRs5baQ.jpeg" companyUrl="https://buynomics.com" />
             </div>
             <div className="flex justify-between items-start mb-0">
               <div>
@@ -105,10 +105,10 @@ export function Resume() {
           </Card>
 
           {/* Stack Browser - Multiple Roles */}
-          <Card className="p-6 relative">
-            <CompanyLogo companyName="Stack Browser" logoUrl="https://i.imgur.com/V4AcZQp.jpeg" companyUrl="https://stackbrowser.com" />
-            <div className="mb-2">
+          <Card className="p-6">
+            <div className="flex justify-between items-start mb-2">
               <h3 className="text-primary">Stack Browser</h3>
+              <CompanyLogo companyName="Stack Browser" logoUrl="https://i.imgur.com/V4AcZQp.jpeg" companyUrl="https://stackbrowser.com" />
             </div>
             
             <div className="relative">
@@ -156,10 +156,10 @@ export function Resume() {
           </Card>
 
           {/* Georgia's Innovation & Technology Agency - Multiple Roles */}
-          <Card className="p-6 relative">
-            <CompanyLogo companyName="Georgia's Innovation & Technology Agency" logoUrl="https://i.imgur.com/P9Trrg8.png" companyUrl="https://gita.gov.ge" />
-            <div className="mb-2">
+          <Card className="p-6">
+            <div className="flex justify-between items-start mb-2">
               <h3 className="text-primary">Georgia's Innovation & Technology Agency</h3>
+              <CompanyLogo companyName="Georgia's Innovation & Technology Agency" logoUrl="https://i.imgur.com/P9Trrg8.png" companyUrl="https://gita.gov.ge" />
             </div>
             
             <div className="relative">
@@ -203,10 +203,10 @@ export function Resume() {
           </Card>
 
           {/* NextMart */}
-          <Card className="p-6 relative">
-            <CompanyLogo companyName="NextMart" logoUrl="https://i.imgur.com/uM9RfnJ.jpeg" companyUrl="https://www.linkedin.com/company/nextmart-holdings-limited/" />
-            <div className="mb-0.5">
+          <Card className="p-6">
+            <div className="flex justify-between items-start mb-0.5">
               <h3 className="text-primary">NextMart</h3>
+              <CompanyLogo companyName="NextMart" logoUrl="https://i.imgur.com/uM9RfnJ.jpeg" companyUrl="https://www.linkedin.com/company/nextmart-holdings-limited/" />
             </div>
             <div className="flex justify-between items-start mb-0">
               <div>

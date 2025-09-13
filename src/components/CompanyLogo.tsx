@@ -9,15 +9,13 @@ interface CompanyLogoProps {
 
 export function CompanyLogo({ companyName, logoUrl, companyUrl }: CompanyLogoProps) {
   const logoElement = (
-    <div className="absolute top-[20px] right-[24px]">
-      <ImageWithFallback
-        src={logoUrl}
-        alt={`${companyName} logo`}
-        className="w-[24px] h-[24px] rounded object-cover transition-all duration-200 ease-in-out hover:brightness-110 hover:opacity-90 hover:rotate-2 hover:shadow-md"
-        width={24}
-        height={24}
-      />
-    </div>
+    <ImageWithFallback
+      src={logoUrl}
+      alt={`${companyName} logo`}
+      className="w-[24px] h-[24px] rounded object-cover transition-all duration-200 ease-in-out hover:brightness-110 hover:opacity-90 hover:rotate-2 hover:shadow-md"
+      width={24}
+      height={24}
+    />
   );
 
   if (companyUrl) {
