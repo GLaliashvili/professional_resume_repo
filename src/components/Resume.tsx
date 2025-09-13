@@ -52,7 +52,7 @@ export function Resume() {
       <section className="mb-8">
         <h2 className="mb-4 text-primary">Summary</h2>
         <p className="text-muted-foreground leading-relaxed">
-          I am a product manager with 12+ years of experience of building and launching SaaS, marketplaces, and consumer apps from the ground up.
+          I am a product manager with 12+ years of experience building and growing SaaS, marketplaces, and consumer apps from the ground up.
         </p>
         <p className="text-muted-foreground leading-relaxed mt-4">
           My background spans startups and scale-ups across revenue growth management, productivity, and sustainability areas. I build with the problem-first approach and lead by focusing on small wins that shape the overall product experience for users.
