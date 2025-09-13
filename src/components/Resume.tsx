@@ -67,7 +67,7 @@ export function Resume() {
          
           {/* Scaler */}
           <Card className="p-6 relative">
-            <CompanyLogo companyName="Scaler" logoUrl="https://i.imgur.com/K3u6SHN.png" />
+            <CompanyLogo companyName="Scaler" logoUrl="https://i.imgur.com/K3u6SHN.png" companyUrl="https://scalerglobal.com" />
             <div className="mb-0.5">
               <h3 className="text-primary">Scaler</h3>
             </div>
@@ -87,7 +87,7 @@ export function Resume() {
 
           {/* Buynomics */}
           <Card className="p-6 relative">
-            <CompanyLogo companyName="Buynomics" logoUrl="https://i.imgur.com/YRs5baQ.jpeg" />
+            <CompanyLogo companyName="Buynomics" logoUrl="https://i.imgur.com/YRs5baQ.jpeg" companyUrl="https://buynomics.com" />
             <div className="mb-0.5">
               <h3 className="text-primary">Buynomics</h3>
             </div>
@@ -106,7 +106,7 @@ export function Resume() {
 
           {/* Stack Browser - Multiple Roles */}
           <Card className="p-6 relative">
-            <CompanyLogo companyName="Stack Browser" logoUrl="https://i.imgur.com/V4AcZQp.jpeg" />
+            <CompanyLogo companyName="Stack Browser" logoUrl="https://i.imgur.com/V4AcZQp.jpeg" companyUrl="https://stackbrowser.com" />
             <div className="mb-2">
               <h3 className="text-primary">Stack Browser</h3>
             </div>
@@ -157,7 +157,7 @@ export function Resume() {
 
           {/* Georgia's Innovation & Technology Agency - Multiple Roles */}
           <Card className="p-6 relative">
-            <CompanyLogo companyName="Georgia's Innovation & Technology Agency" logoUrl="https://i.imgur.com/P9Trrg8.png" />
+            <CompanyLogo companyName="Georgia's Innovation & Technology Agency" logoUrl="https://i.imgur.com/P9Trrg8.png" companyUrl="https://gita.gov.ge" />
             <div className="mb-2">
               <h3 className="text-primary">Georgia's Innovation & Technology Agency</h3>
             </div>
@@ -204,7 +204,7 @@ export function Resume() {
 
           {/* NextMart */}
           <Card className="p-6 relative">
-            <CompanyLogo companyName="NextMart" logoUrl="https://i.imgur.com/uM9RfnJ.jpeg" />
+            <CompanyLogo companyName="NextMart" logoUrl="https://i.imgur.com/uM9RfnJ.jpeg" companyUrl="https://www.linkedin.com/company/nextmart-holdings-limited/" />
             <div className="mb-0.5">
               <h3 className="text-primary">NextMart</h3>
             </div>
