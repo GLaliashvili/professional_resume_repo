@@ -1,5 +1,5 @@
 import React from "react";
-import { Mail, Phone, MapPin, Linkedin } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Download } from "lucide-react";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
@@ -447,6 +447,15 @@ export function Resume() {
       <footer className="text-center">
         <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
           <span>George Laliashvili  •  2025</span>
+          <a 
+            href="https://drive.google.com/file/d/1suC_F59mIWAGgYRWGktsamL23-OE_ZNF/view?usp=drive_link" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 hover:text-primary transition-colors"
+          >
+            <Download className="w-4 h-4" />
+            Download one-pager
+          </a>
           
           {/*
           <a 
