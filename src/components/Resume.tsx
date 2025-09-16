@@ -224,7 +224,7 @@ export function Resume() {
           <Card className="p-6">
             <div className="flex justify-between items-start mb-0.5">
               <h3 className="text-primary">Robocity</h3>
-              <CompanyLogo companyName="Robocity" logoUrl="https://i.imgur.com/uM9RfnJ.jpeg" companyUrl="https://www.linkedin.com/company/nextmart-holdings-limited/" />
+              <CompanyLogo companyName="Robocity" logoUrl="https://i.imgur.com/u1JAMOZ.jpeg" companyUrl="https://www.facebook.com/ROBOCITY.ge" />
             </div>
             <div className="flex justify-between items-start mb-0">
               <div>
