@@ -448,7 +448,7 @@ export function Resume() {
         <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
           <span>George Laliashvili  •  2025</span>
           <a 
-            href="https://drive.google.com/file/d/1suC_F59mIWAGgYRWGktsamL23-OE_ZNF/view?usp=drive_link" 
+            href="/CV One-pager.pdf" 
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 hover:text-primary transition-colors"
