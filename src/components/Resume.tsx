@@ -75,7 +75,7 @@ export function Resume() {
               <div>
                 <h4 className="text-primary">Senior Product Manager</h4>
               </div>
-              <span className="text-sm text-muted-foreground">Oct 2024 – Present</span>
+              <span className="text-sm text-muted-foreground">Oct 2024 - Present</span>
             </div>
             <ul className="space-y-2 text-muted-foreground">
               <li>• Leading structured product scoring to boost clarity and consistency to prioritization.</li>
@@ -95,7 +95,7 @@ export function Resume() {
               <div>
                 <h4 className="text-primary">Product Manager</h4>
               </div>
-              <span className="text-sm text-muted-foreground">Jan 2024 – Oct 2024</span>
+              <span className="text-sm text-muted-foreground">Jan 2024 - Oct 2024</span>
             </div>
             <ul className="space-y-2 text-muted-foreground">
               <li>• Designed and launched a goal-based pricing simulation tool helping customers hit business KPIs.</li>
@@ -123,7 +123,7 @@ export function Resume() {
                       <div>
                         <h4 className="text-primary">Chief Executive Officer</h4>
                       </div>
-                      <span className="text-sm text-muted-foreground">Jan 2022 – Jan 2024</span>
+                      <span className="text-sm text-muted-foreground">Jan 2022 - Jan 2024</span>
                     </div>
                     <ul className="space-y-2 text-muted-foreground">
                       <li>• Led global user research and customer development to validate new growth opportunities.</li>
@@ -140,7 +140,7 @@ export function Resume() {
                       <div>
                         <h4 className="text-primary">Founder & Head of Product</h4>
                       </div>
-                      <span className="text-sm text-muted-foreground">May 2018 – Jan 2022</span>
+                      <span className="text-sm text-muted-foreground">May 2018 - Jan 2022</span>
                     </div>
                     <ul className="space-y-2 text-muted-foreground">
                       <li>• Launched beta and generated $120K in the first 3 months.</li>
@@ -174,7 +174,7 @@ export function Resume() {
                       <div>
                         <h4 className="text-primary">Senior Product Manager</h4>
                       </div>
-                      <span className="text-sm text-muted-foreground">Apr 2016 – May 2018</span>
+                      <span className="text-sm text-muted-foreground">Apr 2016 - May 2018</span>
                     </div>
                     <ul className="space-y-2 text-muted-foreground">
                       <li>• Built international mentor network (90 experts) and co-working space for 140+ entrepreneurs.</li>
@@ -190,7 +190,7 @@ export function Resume() {
                       <div>
                         <h4 className="text-primary">Product Owner</h4>
                       </div>
-                      <span className="text-sm text-muted-foreground">Jan 2016 – Apr 2016</span>
+                      <span className="text-sm text-muted-foreground">Jan 2016 - Apr 2016</span>
                     </div>
                     <ul className="space-y-2 text-muted-foreground">
                       <li>• Launched Georgia's first business incubator; 20% of first batch startups raised funding.</li>
@@ -212,31 +212,42 @@ export function Resume() {
               <div>
                 <h4 className="text-primary">Head of Product</h4>
               </div>
-              <span className="text-sm text-muted-foreground">May 2014 – Jan 2016</span>
+              <span className="text-sm text-muted-foreground">May 2014 - Jan 2016</span>
             </div>
             <ul className="space-y-2 text-muted-foreground">
               <li>• Transitioned business from hardware to mobile marketplace app.</li>
               <li>• Established 42 B2B partnerships, scaled shoppers from 100 to 7,000 in 8 months.</li>
             </ul>
           </Card>
+
+          {/* Robocity */}
+          <Card className="p-6">
+            <div className="flex justify-between items-start mb-0.5">
+              <h3 className="text-primary">Robocity</h3>
+              <CompanyLogo companyName="Robocity" logoUrl="https://i.imgur.com/uM9RfnJ.jpeg" companyUrl="https://www.linkedin.com/company/nextmart-holdings-limited/" />
+            </div>
+            <div className="flex justify-between items-start mb-0">
+              <div>
+                <h4 className="text-primary">Product Manager</h4>
+              </div>
+              <span className="text-sm text-muted-foreground">Feb 2011 - May 2014</span>
+            </div>
+            <ul className="space-y-2 text-muted-foreground">
+              <li>• Developed and launched 3 entertainment rooms: Laser-tag, Spaceship Ride, and Escape Puzzle..</li>
+              <li>• Led market research and customer feedback to inform product strategy.</li>
+              <li>• Grew the number of monthly bookings from 0 to 42 in 4 months.</li>
+              <li>• Helped make Robocity the N1 most visited birthday venue in Georgia in 6 months.</li>
+            </ul>
+          </Card>
+
         </div>
       </section>
 
       {/* Education */}
       <section className="mb-16">
         <h2 className="mb-6 text-primary">Education</h2>
-        
         <div className="space-y-4">
-          <Card className="p-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="text-primary">Master of Arts, Economic Policy and Diplomacy</h3>
-                <p className="text-muted-foreground">Tbilisi State University, Georgia</p>
-              </div>
-              <span className="text-sm text-muted-foreground">2011 - 2013</span>
-            </div>
-          </Card>
-
+  
           <Card className="p-6">
             <div className="flex justify-between items-start">
               <div>
