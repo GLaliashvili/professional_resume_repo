@@ -52,10 +52,10 @@ export function Resume() {
       <section className="mb-16">
         <h2 className="mb-4 text-primary">Summary</h2>
         <p className="text-muted-foreground leading-relaxed">
-          I am a product manager with 12+ years of experience building and growing SaaS, marketplaces, and consumer apps from the ground up.
+          I am a product leader with over 12 years of experience building and growing SaaS, marketplaces, and consumer apps from the ground up.
         </p>
         <p className="text-muted-foreground leading-relaxed mt-4">
-          My background spans startups and scale-ups across revenue growth management, productivity, and sustainability areas. I build with the problem-first approach and lead by focusing on small wins that shape the overall product experience for users.
+        My background spans scale-ups and enterprises across revenue growth management, productivity, and sustainability areas. I build with a problem-first approach, diagnose with data, and lead by focusing on small wins that shape the overall user experience.
         </p>
       </section>
 
@@ -177,8 +177,10 @@ export function Resume() {
                       <span className="text-sm text-muted-foreground">Apr 2016 - May 2018</span>
                     </div>
                     <ul className="space-y-2 text-muted-foreground">
-                      <li>• Built international mentor network (90 experts) and co-working space for 140+ entrepreneurs.</li>
+                      <li>• Buil and launched an international mentors' network platform; (90 experts) and co-working space for 140+ entrepreneurs.</li>
                       <li>• Designed and ran a pre-acceleration program; 8 of 30 companies raised $4.3M post-program.</li>
+                      <li>• Led projects and programs facilitating direct foreign investments in local tech scale-ups.
+                      .</li>
                     </ul>
                   </div>
                 </div>
@@ -194,7 +196,7 @@ export function Resume() {
                     </div>
                     <ul className="space-y-2 text-muted-foreground">
                       <li>• Launched Georgia's first business incubator; 20% of first batch startups raised funding.</li>
-                      <li>• Guided startups through MVP development, Demo Day, and investor readiness.</li>
+                      <li>• Guided founders through MVP development, Demo Day, and investor readiness.</li>
                     </ul>
                   </div>
                 </div>
@@ -216,7 +218,8 @@ export function Resume() {
             </div>
             <ul className="space-y-2 text-muted-foreground">
               <li>• Transitioned business from hardware to mobile marketplace app.</li>
-              <li>• Established 42 B2B partnerships, scaled shoppers from 100 to 7,000 in 8 months.</li>
+              <li>• Established 42 B2B partnerships and scaled the number of regular shoppers from 100 to 7,000 in 8 months.</li>
+              <li>• Increased ARPU by 80% through product placement, bundling, and UX experiments.</li>
             </ul>
           </Card>
 
@@ -233,9 +236,9 @@ export function Resume() {
               <span className="text-sm text-muted-foreground">Feb 2011 - May 2014</span>
             </div>
             <ul className="space-y-2 text-muted-foreground">
-              <li>• Developed and launched 3 entertainment rooms: Laser-tag, Spaceship Ride, and Escape Puzzle..</li>
+              <li>• Developed and launched 3 entertainment product.</li>
               <li>• Led market research and customer feedback to inform product strategy.</li>
-              <li>• Grew the number of monthly bookings from 0 to 42 in 4 months.</li>
+              <li>• Grew monthly events from 0 to 42 in 4 months.</li>
               <li>• Helped make Robocity the N1 most visited birthday venue in Georgia in 6 months.</li>
             </ul>
           </Card>
@@ -320,32 +323,35 @@ export function Resume() {
           <Card className="p-6">
             <h3 className="text-primary mb-3">Product & Business Skills</h3>
             <div className="flex flex-wrap gap-2">
-              {/*
-              <Badge variant="secondary">Agile</Badge>
-              <Badge variant="secondary">Scrum</Badge>
-              <Badge variant="secondary">Kanban</Badge>
-              <Badge variant="secondary">Budget control</Badge>
-              <Badge variant="secondary">Change management</Badge>
-              <Badge variant="secondary">Stakeholder management</Badge>
-              <Badge variant="secondary">Strategy development</Badge>
-              <Badge variant="secondary">Financial projections</Badge>
-              <Badge variant="secondary">Fundraising</Badge>
-              <Badge variant="secondary">Business modeling</Badge>
-              <Badge variant="secondary">Product innovation</Badge>
-              <Badge variant="secondary">Crisis management</Badge>
-              <Badge variant="secondary">Public speaking</Badge>
-              <Badge variant="secondary">Vision development</Badge>
-              <Badge variant="secondary">Customer discovery</Badge>
-              <Badge variant="secondary">GTM</Badge>
-              <Badge variant="secondary">Leadership</Badge>
-              <Badge variant="secondary">Mentorship</Badge>
-              <Badge variant="secondary">A/B testing</Badge>
-              <Badge variant="secondary">APIs</Badge>
-              <Badge variant="secondary">Low-code MVPs</Badge>
-              <Badge variant="secondary">Crisis management</Badge>
-              <Badge variant="secondary">User empathy</Badge>
-              */}
               
+              <Badge variant="secondary">Product strategy</Badge>
+              <Badge variant="secondary">Vision development</Badge>
+              <Badge variant="secondary">Go-to-market strategy</Badge>
+              <Badge variant="secondary">Customer discovery</Badge>
+              <Badge variant="secondary">Product-led growth (PLG)</Badge>
+              <Badge variant="secondary">Monetization models</Badge>
+              <Badge variant="secondary">Monetization strategy</Badge>
+              <Badge variant="secondary">Revenue optimization</Badge>
+              <Badge variant="secondary">Revenue management</Badge>
+              <Badge variant="secondary">Innovation</Badge>
+              <Badge variant="secondary">Roadmapping</Badge>
+              <Badge variant="secondary">SEO</Badge>
+              <Badge variant="secondary">User acquisition</Badge>
+              <Badge variant="secondary">Change management</Badge>
+              <Badge variant="secondary">Conflict management</Badge>
+              <Badge variant="secondary">Stakeholder management</Badge>
+              <Badge variant="secondary">Public speaking</Badge>
+              <Badge variant="secondary">Cross-functional leadership</Badge>
+              <Badge variant="secondary">Mentorship</Badge>
+              <Badge variant="secondary">Collaboration</Badge>
+              <Badge variant="secondary">Teamwork</Badge>
+              <Badge variant="secondary">Product management</Badge>
+              <Badge variant="secondary">Data analysis</Badge>
+              <Badge variant="secondary">Data-driven frameworks</Badge>
+              <Badge variant="secondary">User Experience</Badge>
+              
+
+              {/*
               <Badge variant="secondary">Business strategy</Badge>
               <Badge variant="secondary">Vision development</Badge>
               <Badge variant="secondary">Change management</Badge>
@@ -355,40 +361,40 @@ export function Resume() {
               <Badge variant="secondary">Customer discovery</Badge>
               <Badge variant="secondary">Leadership</Badge>
               <Badge variant="secondary">Mentorship</Badge>
-              
+              */}
+
             </div>
           </Card>
 
           <Card className="p-6">
             <h3 className="text-primary mb-3">Tools & Technical Proficiency</h3>
             <div className="flex flex-wrap gap-2">
-              {/*
-              <Badge variant="secondary">Jira</Badge>
-              <Badge variant="secondary">Asana</Badge>
-              <Badge variant="secondary">Clickup</Badge>
-              <Badge variant="secondary">Atlassian suite</Badge>
-              <Badge variant="secondary">Linear</Badge>
-              <Badge variant="secondary">HubSpot</Badge>
-              <Badge variant="secondary">Intercom</Badge>
-              <Badge variant="secondary">Notion</Badge>
-              <Badge variant="secondary">Miro</Badge>
+              
+              <Badge variant="secondary">Product analytics</Badge>
+              <Badge variant="secondary">Data querying (SQL)</Badge>
+              <Badge variant="secondary">A/B testing</Badge>
+              <Badge variant="secondary">Experimentation frameworks</Badge>
+              <Badge variant="secondary">Google Analytics</Badge>
+              <Badge variant="secondary">Segment</Badge>
+              <Badge variant="secondary">Tableau</Badge>
+              <Badge variant="secondary">Looker</Badge>
+              <Badge variant="secondary">Posthog</Badge>
+              <Badge variant="secondary">Scrum</Badge>
+              <Badge variant="secondary">Excel/Google Sheets (advanced)</Badge>
               <Badge variant="secondary">Figma</Badge>
-              <Badge variant="secondary">Airtable</Badge>
-              <Badge variant="secondary">Excel</Badge>
-              <Badge variant="secondary">Google suite</Badge>
-              <Badge variant="secondary">MS suite</Badge>
-              <Badge variant="secondary">Canny</Badge>
-              <Badge variant="secondary">Typeform</Badge>
-              <Badge variant="secondary">Craft</Badge>
-              <Badge variant="secondary">Slack</Badge>
-              <Badge variant="secondary">Metabase</Badge>
-              <Badge variant="secondary">Postgres</Badge>
-              <Badge variant="secondary">SQL</Badge>
+              <Badge variant="secondary">No-code prototyping</Badge>
+              <Badge variant="secondary">Low-code MVPs</Badge>
+              <Badge variant="secondary">APIs</Badge>
+              <Badge variant="secondary">AI workflows & evals</Badge>
               <Badge variant="secondary">Webflow</Badge>
+              <Badge variant="secondary">CMS</Badge>
+              <Badge variant="secondary">Jira</Badge>
+              <Badge variant="secondary">Linear</Badge>
+              <Badge variant="secondary">Confluence</Badge>
+              <Badge variant="secondary">Amplitude</Badge>
               <Badge variant="secondary">Mixpanel</Badge>
-              <Badge variant="secondary">ERP</Badge>
-              <Badge variant="secondary">CRM</Badge>
-              */}
+              
+              {/*
               <Badge variant="secondary">Data querying</Badge>
               <Badge variant="secondary">Data analytics</Badge>
               <Badge variant="secondary">Roadmapping</Badge>
@@ -398,6 +404,7 @@ export function Resume() {
               <Badge variant="secondary">Figma</Badge>
               <Badge variant="secondary">Low-code MVPs</Badge>
               <Badge variant="secondary">APIs</Badge>
+              */}
               
             </div>
           </Card>
