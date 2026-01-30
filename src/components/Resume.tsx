@@ -77,11 +77,11 @@ export function Resume() {
               </div>
               <span className="text-sm text-muted-foreground">Oct 2024 - Present</span>
             </div>
-            <ul className="space-y-2 text-muted-foreground">
-              <li>• Leading structured product scoring to boost clarity and consistency to prioritization.</li>
-              <li>• Working closely with high-impact clients to translate critical ESG reporting needs into product outcomes.</li>
-              <li>• Guiding cross-functional teams focused on data collection and analytics.</li>
-              <li>• Building scalable frameworks to strengthen regulatory compliance across multiregional portfolios.</li>
+            <ul className="resume-list space-y-2 text-muted-foreground">
+              <li>Leading structured product scoring to boost clarity and consistency to prioritization.</li>
+              <li>Working closely with high-impact clients to translate critical ESG reporting needs into product outcomes.</li>
+              <li>Guiding cross-functional teams focused on data collection and analytics.</li>
+              <li>Building scalable frameworks to strengthen regulatory compliance across multiregional portfolios.</li>
             </ul>
           </Card>
 
@@ -95,12 +95,12 @@ export function Resume() {
               <div>
                 <h4 className="text-primary">Product Manager</h4>
               </div>
-              <span className="text-sm text-muted-foreground">Jan 2024 - Oct 2024</span>
+              <span className="text-sm text-muted-foreground">Oct 2023 - Oct 2024</span>
             </div>
-            <ul className="space-y-2 text-muted-foreground">
-              <li>• Designed and launched a goal-based pricing simulation tool helping customers hit business KPIs.</li>
-              <li>• Built a pricing simulation changelog enabling efficient collaboration across multi-account clients.</li>
-              <li>• Enhanced core platform architecture by redesigning the internal admin system, data hierarchies, and user access management.</li>
+            <ul className="resume-list space-y-2 text-muted-foreground">
+              <li>Designed and launched a goal-based pricing simulation tool helping customers hit business KPIs.</li>
+              <li>Built a pricing simulation changelog enabling efficient collaboration across multi-account clients.</li>
+              <li>Enhanced core platform architecture by redesigning the internal admin system, data hierarchies, and user access management.</li>
             </ul>
           </Card>
 
@@ -123,12 +123,12 @@ export function Resume() {
                       <div>
                         <h4 className="text-primary">Chief Executive Officer</h4>
                       </div>
-                      <span className="text-sm text-muted-foreground">Jan 2022 - Jan 2024</span>
+                      <span className="text-sm text-muted-foreground">Jan 2022 - Oct 2023</span>
                     </div>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li>• Led global user research and customer development to validate new growth opportunities.</li>
-                      <li>• Oversaw product discovery and innovation, piloting new features to support continuous growth.</li>
-                      <li>• Fostered a culture of experimentation, design excellence, and data-driven decision making.</li>
+                    <ul className="resume-list space-y-2 text-muted-foreground">
+                      <li>Led global user research and customer development to validate new growth opportunities.</li>
+                      <li>Oversaw product discovery and innovation, piloting new features to support continuous growth.</li>
+                      <li>Fostered a culture of experimentation, design excellence, and data-driven decision making.</li>
                     </ul>
                   </div>
                 </div>
@@ -142,12 +142,12 @@ export function Resume() {
                       </div>
                       <span className="text-sm text-muted-foreground">May 2018 - Jan 2022</span>
                     </div>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li>• Launched beta and generated $120K in the first 3 months.</li>
-                      <li>• Built 70% of high-impact features in first 12 months, boositng NPS from 34 to 66.</li>
-                      <li>• Grew user base 3x utilizing network effect with social features (shared workspaces).</li>
-                      <li>• Led technical migration from ElectronJS to Chromium.</li>
-                      <li>• Increased activation rate by 40% through UX experimentation and A/B testing.</li>
+                    <ul className="resume-list space-y-2 text-muted-foreground">
+                      <li>Launched beta and generated $120K in the first 3 months.</li>
+                      <li>Built 70% of high-impact features in first 12 months, boositng NPS from 34 to 66.</li>
+                      <li>Grew user base 3x utilizing network effect with social features (shared workspaces).</li>
+                      <li>Led technical migration from ElectronJS to Chromium.</li>
+                      <li>Increased activation rate by 40% through UX experimentation and A/B testing.</li>
                     </ul>
                   </div>
                 </div>
@@ -176,11 +176,10 @@ export function Resume() {
                       </div>
                       <span className="text-sm text-muted-foreground">Apr 2016 - May 2018</span>
                     </div>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li>• Buil and launched an international mentors' network platform; (90 experts) and co-working space for 140+ entrepreneurs.</li>
-                      <li>• Designed and ran a pre-acceleration program; 8 of 30 companies raised $4.3M post-program.</li>
-                      <li>• Led projects and programs facilitating direct foreign investments in local tech scale-ups.
-                      .</li>
+                    <ul className="resume-list space-y-2 text-muted-foreground">
+                      <li>Built and launched an international mentors' network platform; (90 experts) and co-working space for 140+ entrepreneurs.</li>
+                      <li>Designed and ran a pre-acceleration program; 8 of 30 companies raised $4.3M post-program.</li>
+                      <li>Led projects and programs facilitating direct foreign investments in local tech scale-ups.</li>
                     </ul>
                   </div>
                 </div>
@@ -194,9 +193,9 @@ export function Resume() {
                       </div>
                       <span className="text-sm text-muted-foreground">Jan 2016 - Apr 2016</span>
                     </div>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li>• Launched Georgia's first business incubator; 20% of first batch startups raised funding.</li>
-                      <li>• Guided founders through MVP development, Demo Day, and investor readiness.</li>
+                    <ul className="resume-list space-y-2 text-muted-foreground">
+                      <li>Launched Georgia's first business incubator; 20% of first batch startups raised funding.</li>
+                      <li>Guided founders through MVP development, Demo Day, and investor readiness.</li>
                     </ul>
                   </div>
                 </div>
@@ -216,10 +215,10 @@ export function Resume() {
               </div>
               <span className="text-sm text-muted-foreground">May 2014 - Jan 2016</span>
             </div>
-            <ul className="space-y-2 text-muted-foreground">
-              <li>• Transitioned business from hardware to mobile marketplace app.</li>
-              <li>• Established 42 B2B partnerships and scaled the number of regular shoppers from 100 to 7,000 in 8 months.</li>
-              <li>• Increased ARPU by 80% through product placement, bundling, and UX experiments.</li>
+            <ul className="resume-list space-y-2 text-muted-foreground">
+              <li>Transitioned business from hardware to mobile marketplace app.</li>
+              <li>Established 42 B2B partnerships and scaled the number of regular shoppers from 100 to 7,000 in 8 months.</li>
+              <li>Increased ARPU by 80% through product placement, bundling, and UX experiments.</li>
             </ul>
           </Card>
 
@@ -235,11 +234,11 @@ export function Resume() {
               </div>
               <span className="text-sm text-muted-foreground">Feb 2011 - May 2014</span>
             </div>
-            <ul className="space-y-2 text-muted-foreground">
-              <li>• Developed and launched 3 entertainment product.</li>
-              <li>• Led market research and customer feedback to inform product strategy.</li>
-              <li>• Grew monthly events from 0 to 42 in 4 months.</li>
-              <li>• Helped make Robocity the N1 most visited birthday venue in Georgia in 6 months.</li>
+            <ul className="resume-list space-y-2 text-muted-foreground">
+              <li>Developed and launched 3 entertainment product.</li>
+              <li>Led market research and customer feedback to inform product strategy.</li>
+              <li>Grew monthly events from 0 to 42 in 4 months.</li>
+              <li>Helped make Robocity the N1 most visited birthday venue in Georgia in 6 months.</li>
             </ul>
           </Card>
 
@@ -453,7 +452,7 @@ export function Resume() {
       {/* Footer */}
       <footer className="text-center">
         <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-          <span>George Laliashvili  •  2025</span>
+          <span>George Laliashvili  •  2026</span>
           <a 
             href="/CV-one-pager.pdf" 
             target="_blank" 

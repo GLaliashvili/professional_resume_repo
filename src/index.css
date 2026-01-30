@@ -4517,6 +4517,14 @@ html {
   }
 }
 
+@layer utilities {
+  .resume-list {
+    list-style: disc;
+    list-style-position: outside;
+    padding-left: 1.25rem;
+  }
+}
+
 @keyframes enter {
   from {
     opacity: var(--tw-enter-opacity, 1);
