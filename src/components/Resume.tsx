@@ -385,6 +385,10 @@ export function Resume() {
               <Badge variant="secondary">Low-code MVPs</Badge>
               <Badge variant="secondary">APIs</Badge>
               <Badge variant="secondary">AI workflows & evals</Badge>
+              <Badge variant="secondary">LLMs</Badge>
+              <Badge variant="secondary">n8n</Badge>
+              <Badge variant="secondary">Claude Code</Badge>
+              <Badge variant="secondary">AI Agentic Workflows</Badge>
               <Badge variant="secondary">Webflow</Badge>
               <Badge variant="secondary">CMS</Badge>
               <Badge variant="secondary">Jira</Badge>
