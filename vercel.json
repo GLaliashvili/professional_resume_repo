@@ -1,0 +1,19 @@
+{
+  "buildCommand": "vite build",
+  "outputDirectory": "build",
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "www.iamgeorge.nl" }],
+      "destination": "https://iamgeorge.nl/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.iamgeorge.nl" }],
+      "destination": "https://iamgeorge.nl/:path*",
+      "permanent": true
+    }
+  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
