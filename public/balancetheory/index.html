@@ -1,0 +1,679 @@
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>ბალანსის ზედაპირი</title>
+<style>
+  :root {
+    --bg: #14120d;
+    --ink: #f4efe2;
+    --ink-faint: rgba(244, 239, 226, 0.38);
+    --accent: #ffb62b;
+    --accent-bright: #ffd34d;
+    --muted: #a39c8a;
+    --doodle-font: 'Chalkboard SE', 'Comic Sans MS', 'Segoe Print', 'Bradley Hand', cursive;
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--doodle-font);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 16px;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* svh keeps the footer clear of the mobile address bar when it is expanded */
+  @supports (min-height: 100svh) {
+    body { min-height: 100svh; }
+  }
+
+  .layout {
+    margin-top: auto; /* pairs with the footer's auto margin to stay centered */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(24px, 5vw, 72px);
+    width: 100%;
+  }
+
+  /* labels live inside the SVG now; the stage matches its viewBox ratio */
+  .stage {
+    position: relative;
+    height: min(76vmin, 640px);
+    aspect-ratio: 1300 / 1120; /* kept in sync with the viewBox by script */
+  }
+
+  svg { width: 100%; height: 100%; display: block; touch-action: none; }
+
+  .side {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* fields vertically centered against the diagram, button pinned at the top */
+  .panel {
+    margin: auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .panel .row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .panel label {
+    font-size: clamp(12px, 2.2vmin, 16px);
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .panel .num {
+    width: 5ch;
+    text-align: center;
+    font-family: var(--doodle-font);
+    font-size: clamp(15px, 2.6vmin, 20px);
+    color: var(--accent-bright);
+    background: rgba(255, 182, 43, 0.06);
+    border: 1.6px solid var(--ink-faint);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    padding: 3px 4px;
+    outline: none;
+  }
+  .panel .num:focus-visible {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(255, 182, 43, 0.25);
+  }
+  .panel .num::-webkit-outer-spin-button,
+  .panel .num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .panel .num[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+  /* slider + read-out: mobile only */
+  .panel .val, .panel .range { display: none; }
+
+  circle.dot { cursor: grab; }
+  circle.dot:active { cursor: grabbing; }
+
+  #reset {
+    font-family: var(--doodle-font);
+    font-size: clamp(13px, 2.2vmin, 16px);
+    letter-spacing: 0.1em;
+    /* yellow is the interactive colour across the page: this rests bright and
+       recedes on hover */
+    color: var(--accent-bright);
+    background: transparent;
+    border: 1.6px solid var(--accent);
+    border-radius: 15px 225px 15px 255px / 255px 15px 225px 15px;
+    padding: 6px 18px;
+    cursor: pointer;
+  }
+  .reset-icon { display: none; }
+  #reset:hover {
+    color: var(--muted);
+    border-color: var(--ink-faint);
+  }
+  #reset:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(255, 182, 43, 0.25);
+  }
+
+  .footer {
+    margin-top: auto; /* pinned to the bottom of the page */
+    padding-top: clamp(40px, 8vmin, 88px);
+    padding-bottom: 45px; /* doubles the line's distance from the bottom edge */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    align-self: stretch;
+  }
+  .footer hr {
+    width: 100%;
+    margin: 0;
+    border: none;
+    border-top: 1px solid #33302a;
+  }
+  .title {
+    font-size: clamp(10px, 1.6vmin, 12px);
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .title:hover {
+    color: var(--accent-bright);
+    border-bottom: 1.4px dashed var(--accent);
+  }
+  .title:focus-visible {
+    outline: none;
+    color: var(--accent-bright);
+    border-bottom: 1.4px solid var(--accent);
+  }
+
+  /* ---------------------------------------------------------------- mobile */
+  @media (max-width: 720px) {
+    body { padding: 8px; justify-content: flex-start; }
+
+    .layout {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* the diagram claims the full width; the viewBox leaves only a 2% margin
+       so the axes run almost edge to edge. On short screens the max-height
+       backs it off rather than pushing the sliders below the fold. */
+    .stage { width: 100%; height: auto; }
+    @supports (height: 100svh) {
+      .stage { max-height: calc(100svh - 320px); }
+    }
+
+    .side { width: 100%; align-items: stretch; }
+
+    /* one line per axis: label | slider | read-out. The shared grid keeps the
+       sliders aligned no matter how wide the longest label is. */
+    .panel {
+      width: 100%;
+      margin: 0;
+      padding: 0 6px;
+      box-sizing: border-box;
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr) max-content;
+      align-items: center;
+      column-gap: 10px;
+      row-gap: 4px;
+    }
+
+    /* pulled out of the flow into the corner so the panel can sit right
+       under the diagram */
+    #reset {
+      position: fixed;
+      top: calc(10px + env(safe-area-inset-top, 0px));
+      right: calc(10px + env(safe-area-inset-right, 0px));
+      z-index: 5;
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      color: var(--accent-bright);
+      border-color: var(--accent);
+      border-radius: 58% 42% 46% 54% / 52% 48% 52% 48%; /* hand-drawn circle */
+      -webkit-tap-highlight-color: transparent;
+    }
+    #reset:active { color: var(--muted); border-color: var(--ink-faint); }
+    .reset-text {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+    .reset-icon {
+      display: block;
+      width: 19px;
+      height: 19px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* the row is only a grouping wrapper — its children join the panel grid */
+    .panel .row { display: contents; }
+
+    .panel .num { display: none; }
+
+    .panel label {
+      font-size: 15px;
+      letter-spacing: 0.09em;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .panel .val {
+      display: block;
+      min-width: 3.6ch;
+      text-align: center;
+      font-family: var(--doodle-font);
+      font-size: 18px;
+      line-height: 1.1;
+      color: var(--accent-bright);
+      background: rgba(255, 182, 43, 0.06);
+      border: 1.6px solid var(--ink-faint);
+      border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+      padding: 2px 6px;
+    }
+
+    /* easy-to-grab slider: 38px tall touch strip, 26px thumb */
+    .panel .range {
+      display: block;
+      width: 100%;
+      height: 38px;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      -webkit-appearance: none;
+      appearance: none;
+      outline: none;
+      touch-action: none;
+    }
+    .panel .range::-webkit-slider-runnable-track {
+      height: 7px;
+      border-radius: 6px;
+      background: rgba(244, 239, 226, 0.12);
+      border: 1.2px solid var(--ink-faint);
+    }
+    .panel .range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 26px;
+      height: 26px;
+      margin-top: -10.5px;
+      border-radius: 50%;
+      background: var(--accent-bright);
+      border: 2.6px solid var(--accent);
+      box-shadow: 0 0 0 6px rgba(255, 182, 43, 0.08);
+    }
+    .panel .range::-moz-range-track {
+      height: 7px;
+      border-radius: 6px;
+      background: rgba(244, 239, 226, 0.12);
+      border: 1.2px solid var(--ink-faint);
+    }
+    .panel .range::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent-bright);
+      border: 2.6px solid var(--accent);
+      box-shadow: 0 0 0 6px rgba(255, 182, 43, 0.08);
+    }
+    .panel .range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 6px rgba(255, 182, 43, 0.22); }
+    .panel .range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 6px rgba(255, 182, 43, 0.22); }
+
+    .footer {
+      padding-top: 14px;
+      /* 100svh already excludes the browser's bottom bar, so the safe-area
+         inset on top of it was double-counting and floating the line too high */
+      padding-bottom: 16px;
+      gap: 12px;
+    }
+    .title {
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+  }
+</style>
+
+<div class="layout">
+  <div class="stage" id="stage">
+    <svg id="svg" viewBox="0 0 1300 1120" aria-label="ბალანსის ზედაპირი: სხეული, საქმე, კავშირები, საზრისი">
+      <defs>
+        <pattern id="hatch" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="16" stroke="#ffb62b" stroke-width="2" stroke-linecap="round" opacity="0.13"/>
+        </pattern>
+      </defs>
+      <polygon id="fill" fill="url(#hatch)" stroke="none"/>
+      <g id="axes" fill="#f4efe2" stroke="none"></g>
+      <g id="labels" fill="#a39c8a" font-size="26" letter-spacing="2" style="font-family: var(--doodle-font);"></g>
+      <path id="rhombus" fill="none" stroke="#ffb62b" stroke-width="3.4"
+            stroke-dasharray="14 10" stroke-linecap="round" stroke-linejoin="round"/>
+      <g id="dots"></g>
+    </svg>
+  </div>
+
+  <div class="side">
+    <button id="reset" type="button" title="თავიდან" aria-label="თავიდან">
+      <span class="reset-text">თავიდან</span>
+      <svg class="reset-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+      </svg>
+    </button>
+    <div class="panel">
+      <div class="row">
+        <input class="num" id="f-body" type="number" min="0" max="100" step="1" data-axis="0"/>
+        <label for="f-body">სხეული</label>
+        <input class="range" type="range" min="0" max="100" step="1" aria-label="სხეული"/>
+        <output class="val" for="f-body">25</output>
+      </div>
+      <div class="row">
+        <input class="num" id="f-work" type="number" min="0" max="100" step="1" data-axis="1"/>
+        <label for="f-work">საქმე</label>
+        <input class="range" type="range" min="0" max="100" step="1" aria-label="საქმე"/>
+        <output class="val" for="f-work">25</output>
+      </div>
+      <div class="row">
+        <input class="num" id="f-conn" type="number" min="0" max="100" step="1" data-axis="2"/>
+        <label for="f-conn">კავშირები</label>
+        <input class="range" type="range" min="0" max="100" step="1" aria-label="კავშირები"/>
+        <output class="val" for="f-conn">25</output>
+      </div>
+      <div class="row">
+        <input class="num" id="f-mind" type="number" min="0" max="100" step="1" data-axis="3"/>
+        <label for="f-mind">საზრისი</label>
+        <input class="range" type="range" min="0" max="100" step="1" aria-label="საზრისი"/>
+        <output class="val" for="f-mind">25</output>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <hr/>
+  <a class="title" href="https://en.wikipedia.org/wiki/Positive_psychotherapy" target="_blank" rel="noopener">პეზეშკიანის ბალანსის მოდელი</a>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // order matches the input data-axis indices
+  var AXES = [
+    { name: 'სხეული',    dir: [0, -1] }, // top
+    { name: 'საქმე',     dir: [1, 0] },  // right
+    { name: 'კავშირები', dir: [0, 1] },  // bottom
+    { name: 'საზრისი',   dir: [-1, 0] }  // left
+  ];
+
+  // two geometries. mobile pushes the axis tips to within 2% of the viewBox
+  // edge and lifts the side labels above the horizontal axis so nothing has to
+  // reserve horizontal room for them.
+  // mobile packs ~1.5x fewer screen pixels per viewBox unit, so every drawn
+  // weight is scaled by roughly that factor to look identical in the hand
+  var DESKTOP = { W: 1300, H: 1120, CX: 650, CY: 560, L: 490, PAD: 28,
+                  fontSize: 26, dotR: 12, grab: 70, pen: 6.5, edge: 3.4,
+                  dash: '14 10', sideLabels: 'across' };
+  var MOBILE  = { W: 1000, H: 1130, CX: 500, CY: 560, L: 480, PAD: 40,
+                  fontSize: 40, dotR: 18, grab: 130, pen: 10, edge: 5.2,
+                  dash: '21 15', sideLabels: 'above' };
+
+  var mq = window.matchMedia('(max-width: 720px)');
+  var G = mq.matches ? MOBILE : DESKTOP;
+
+  var values = [25, 25, 25, 25];
+
+  var svg = document.getElementById('svg');
+  var stage = document.getElementById('stage');
+  var gAxes = document.getElementById('axes');
+  var gLabels = document.getElementById('labels');
+  var elRhombus = document.getElementById('rhombus');
+  var elFill = document.getElementById('fill');
+  var gDots = document.getElementById('dots');
+  var nums = Array.prototype.slice.call(document.querySelectorAll('.panel .num'));
+  var vals = Array.prototype.slice.call(document.querySelectorAll('.panel .val'));
+  var ranges = Array.prototype.slice.call(document.querySelectorAll('.panel .range'));
+
+  // ---------- seeded wobble ----------
+  function mulberry32(seed) {
+    return function () {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function smoothOffsets(segs, r) {
+    var offs = [], k;
+    for (k = 0; k <= segs; k++) offs.push(r() * 2 - 1);
+    for (var pass = 0; pass < 2; pass++) {
+      offs = offs.map(function (o, i) {
+        var a = offs[Math.max(0, i - 1)], b = offs[Math.min(segs, i + 1)];
+        return (a + o + b) / 3;
+      });
+    }
+    return offs;
+  }
+
+  // hand-drawn line: jittered perpendicular offsets, pinned at both ends.
+  // Returns "L x y ..." so segments can be chained after an M command.
+  function wobblyLine(x1, y1, x2, y2, seed, amp) {
+    var segs = 14;
+    var r = mulberry32(seed);
+    var dx = x2 - x1, dy = y2 - y1;
+    var len = Math.hypot(dx, dy) || 1;
+    var nx = -dy / len, ny = dx / len;
+    var offs = smoothOffsets(segs, r);
+    var pts = [];
+    for (var k = 0; k <= segs; k++) {
+      var t = k / segs;
+      var pin = Math.sin(Math.PI * t); // exact endpoints
+      var o = offs[k] * amp * pin;
+      pts.push([x1 + dx * t + nx * o, y1 + dy * t + ny * o]);
+    }
+    return pts.map(function (p) {
+      return 'L' + p[0].toFixed(1) + ' ' + p[1].toFixed(1);
+    }).join(' ');
+  }
+
+  // hand-drawn pen stroke: wobbly centerline rendered as a filled shape whose
+  // width swells in the middle and thins out at both ends
+  function taperedLine(x1, y1, x2, y2, seed, maxW) {
+    var segs = 14;
+    var r = mulberry32(seed);
+    var dx = x2 - x1, dy = y2 - y1;
+    var len = Math.hypot(dx, dy) || 1;
+    var nx = -dy / len, ny = dx / len;
+    var offs = smoothOffsets(segs, r);
+    var left = [], right = [];
+    for (var k = 0; k <= segs; k++) {
+      var t = k / segs;
+      var pin = Math.sin(Math.PI * t);
+      var o = offs[k] * 3.4 * pin;
+      var cx = x1 + dx * t + nx * o;
+      var cy = y1 + dy * t + ny * o;
+      var w = maxW * (0.12 + 0.88 * Math.pow(pin, 0.7)); // thin ends, full middle
+      w *= 1 + (r() - 0.5) * 0.25; // slight ink irregularity
+      left.push([cx + nx * w / 2, cy + ny * w / 2]);
+      right.push([cx - nx * w / 2, cy - ny * w / 2]);
+    }
+    var d = 'M' + left.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L');
+    d += ' L' + right.reverse().map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L') + ' Z';
+    return d;
+  }
+
+  function dotPos(i) {
+    var f = values[i] / 100; // linear: 0 at center, 100 at the tip
+    return [G.CX + AXES[i].dir[0] * f * G.L,
+            G.CY + AXES[i].dir[1] * f * G.L];
+  }
+
+  // ---------- frame: viewBox, axes and labels ----------
+  function drawFrame() {
+    svg.setAttribute('viewBox', '0 0 ' + G.W + ' ' + G.H);
+    stage.style.aspectRatio = G.W + ' / ' + G.H;
+    gLabels.setAttribute('font-size', G.fontSize);
+
+    // two full pen strokes: vertical (Body–Connections) and horizontal (Mind–Work),
+    // tapering only at the four outer tips
+    var d = taperedLine(G.CX, G.CY - G.L, G.CX, G.CY + G.L, 101, G.pen) + ' ' +
+            taperedLine(G.CX - G.L, G.CY, G.CX + G.L, G.CY, 118, G.pen);
+    gAxes.innerHTML = '<path d="' + d + '"/>';
+
+    elRhombus.setAttribute('stroke-width', G.edge);
+    elRhombus.setAttribute('stroke-dasharray', G.dash);
+
+    var fs = G.fontSize;
+    var top = '<text x="' + G.CX + '" y="' + (G.CY - G.L - G.PAD) + '" text-anchor="middle">' + AXES[0].name + '</text>';
+    var bottom = '<text x="' + G.CX + '" y="' + (G.CY + G.L + G.PAD + fs * 0.85) + '" text-anchor="middle">' + AXES[2].name + '</text>';
+    var right, left;
+
+    if (G.sideLabels === 'above') {
+      // sit the side labels just above the horizontal axis at its tips, so the
+      // axis itself can run all the way out to the edge
+      var y = G.CY - G.PAD * 0.55;
+      right = '<text x="' + (G.CX + G.L) + '" y="' + y + '" text-anchor="end">' + AXES[1].name + '</text>';
+      left  = '<text x="' + (G.CX - G.L) + '" y="' + y + '" text-anchor="start">' + AXES[3].name + '</text>';
+    } else {
+      right = '<text x="' + (G.CX + G.L + G.PAD) + '" y="' + (G.CY + 9) + '" text-anchor="start">' + AXES[1].name + '</text>';
+      left  = '<text x="' + (G.CX - G.L - G.PAD) + '" y="' + (G.CY + 9) + '" text-anchor="end">' + AXES[3].name + '</text>';
+    }
+
+    gLabels.innerHTML = top + right + bottom + left;
+  }
+
+  // ---------- rhombus + fill + dots (redrawn on every value change) ----------
+  function drawShape() {
+    var pts = [dotPos(0), dotPos(1), dotPos(2), dotPos(3)];
+    var d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1) + ' ';
+    for (var i = 0; i < 4; i++) {
+      var a = pts[i], b = pts[(i + 1) % 4];
+      d += wobblyLine(a[0], a[1], b[0], b[1], 900 + i * 23, 4.2) + ' ';
+    }
+    d += 'Z';
+    elRhombus.setAttribute('d', d);
+    elFill.setAttribute('points', pts.map(function (p) { return p[0] + ',' + p[1]; }).join(' '));
+
+    var dots = '';
+    for (var j = 0; j < 4; j++) {
+      // invisible halo first: a generous touch target around every handle
+      dots += '<circle class="dot" data-dot="' + j + '" cx="' + pts[j][0] + '" cy="' + pts[j][1] +
+              '" r="' + (G.grab * 0.6) + '" fill="transparent" stroke="none"/>';
+      dots += '<circle class="dot" data-dot="' + j + '" cx="' + pts[j][0] + '" cy="' + pts[j][1] +
+              '" r="' + G.dotR + '" fill="#ffd34d" stroke="#ffb62b" stroke-width="' + (G.dotR / 4) + '"/>';
+    }
+    gDots.innerHTML = dots;
+  }
+
+  // ---------- value logic: sum pinned to 100, proportional compensation ----------
+  function setValue(i, v) {
+    v = Math.min(100, Math.max(0, v));
+    var others = [0, 1, 2, 3].filter(function (j) { return j !== i; });
+    var sumO = others.reduce(function (s, j) { return s + values[j]; }, 0);
+    var remain = 100 - v;
+    if (sumO < 1e-9) {
+      others.forEach(function (j) { values[j] = remain / 3; });
+    } else {
+      others.forEach(function (j) { values[j] = values[j] * remain / sumO; });
+    }
+    values[i] = v;
+  }
+
+  // Whole-number read-outs. The underlying values stay fractional so the
+  // geometry moves smoothly, but every displayed figure is an integer and the
+  // four of them still add up to exactly 100 (largest-remainder rounding).
+  function displayValues() {
+    var floors = values.map(Math.floor);
+    var short = Math.round(100 - floors.reduce(function (s, v) { return s + v; }, 0));
+    var byRemainder = [0, 1, 2, 3].sort(function (a, b) {
+      return (values[b] - floors[b]) - (values[a] - floors[a]);
+    });
+    var out = floors.slice();
+    for (var k = 0; k < short; k++) out[byRemainder[k % 4]] += 1;
+    return out;
+  }
+
+  // skip: index of a control the user is currently operating — leave it alone
+  function syncInputs(skip) {
+    var shown = displayValues();
+    for (var i = 0; i < 4; i++) {
+      var text = String(shown[i]);
+      if (!(i === skip && document.activeElement === nums[i])) nums[i].value = text;
+      vals[i].textContent = text;
+      if (i !== skip) ranges[i].value = shown[i]; // thumb matches its read-out
+    }
+  }
+
+  // ---------- number fields (desktop) ----------
+  nums.forEach(function (inp, i) {
+    inp.addEventListener('input', function () {
+      var v = parseFloat(inp.value);
+      if (isNaN(v)) return;
+      setValue(i, v);
+      syncInputs(i);
+      drawShape();
+    });
+    inp.addEventListener('blur', function () { syncInputs(-1); });
+  });
+
+  // ---------- sliders (mobile) ----------
+  ranges.forEach(function (rng, i) {
+    rng.addEventListener('input', function () {
+      setValue(i, parseFloat(rng.value));
+      syncInputs(i);
+      drawShape();
+    });
+    rng.addEventListener('change', function () { syncInputs(-1); });
+  });
+
+  // ---------- dragging dots along their axis ----------
+  var dragging = -1;
+
+  function svgPoint(e) {
+    var rect = svg.getBoundingClientRect();
+    return [(e.clientX - rect.left) / rect.width * G.W,
+            (e.clientY - rect.top) / rect.height * G.H];
+  }
+
+  // Pick the handle nearest the touch instead of requiring a direct hit. Dots
+  // sitting on the axis the finger points down get preference, which keeps the
+  // choice sane when several handles are bunched near the centre.
+  function pickDot(p) {
+    var best = -1, bestScore = Infinity;
+    for (var i = 0; i < 4; i++) {
+      var d = dotPos(i);
+      var dist = Math.hypot(p[0] - d[0], p[1] - d[1]);
+      if (dist > G.grab) continue;
+      var proj = (p[0] - G.CX) * AXES[i].dir[0] + (p[1] - G.CY) * AXES[i].dir[1];
+      var score = dist + (proj >= 0 ? 0 : G.grab * 0.5); // gentle penalty, not a veto
+      if (score < bestScore) { bestScore = score; best = i; }
+    }
+    return best;
+  }
+
+  svg.addEventListener('pointerdown', function (e) {
+    var hit = pickDot(svgPoint(e));
+    if (hit < 0) return;
+    dragging = hit;
+    svg.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  svg.addEventListener('pointermove', function (e) {
+    if (dragging < 0) return;
+    var p = svgPoint(e);
+    var proj = (p[0] - G.CX) * AXES[dragging].dir[0] + (p[1] - G.CY) * AXES[dragging].dir[1];
+    setValue(dragging, Math.min(100, Math.max(0, proj / G.L * 100)));
+    syncInputs(-1);
+    drawShape();
+  });
+  function endDrag() { dragging = -1; }
+  svg.addEventListener('pointerup', endDrag);
+  svg.addEventListener('pointercancel', endDrag);
+
+  // ---------- reset ----------
+  document.getElementById('reset').addEventListener('click', function () {
+    values = [25, 25, 25, 25];
+    syncInputs(-1);
+    drawShape();
+  });
+
+  // ---------- breakpoint switching ----------
+  function applyLayout() {
+    var next = mq.matches ? MOBILE : DESKTOP;
+    if (next === G) return;
+    G = next;
+    drawFrame();
+    drawShape();
+  }
+  if (mq.addEventListener) mq.addEventListener('change', applyLayout);
+  else if (mq.addListener) mq.addListener(applyLayout);
+
+  syncInputs(-1);
+  drawFrame();
+  drawShape();
+})();
+</script>
