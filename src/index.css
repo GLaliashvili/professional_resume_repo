@@ -4655,8 +4655,11 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
+/* 1080 is what caps the grid at THREE columns: a fourth would need
+   4 * 300 + 3 * 24 = 1272px of track, which this width cannot supply. Widen
+   this and the grid silently becomes 4-up. */
 .projects-shell {
-  max-width: 1100px;
+  max-width: 1080px;
   margin: 0 auto;
 }
 
@@ -4696,11 +4699,12 @@ html {
   color: #b4b4b4;
 }
 
-/* auto-fill + minmax gives 4 across on a wide screen, 3 on a laptop, 2 on a
-   tablet and 1 on a phone, with no media queries to keep in sync. */
+/* Three across at full width, dropping to 2 and then 1 as the viewport narrows,
+   with no media queries to keep in sync. The 300px minimum plus the 1080px cap
+   on .projects-shell is what fixes the maximum at three. */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
 }
 

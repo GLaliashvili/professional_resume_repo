@@ -2,15 +2,12 @@
  * The projects page content. This is the only file to edit when adding, removing
  * or reordering a project — Projects.tsx reads it and needs no changes.
  *
- * Everything here is placeholder content for now. Real entries to come:
- *   balance theory -> "/balancetheory", external: false (static file, not a
- *                     react-router route, so it must be a plain anchor)
- *   simpsonify     -> "https://simpsonify.us", external: true
- *   Stack Browser  -> "https://stackbrowser.com/", external: true
+ * Images live in public/projects/<slug>.png and are shown at 16:9 (the files
+ * there now are generated stand-ins; drop real images over the same names).
  *
- * Images live in public/projects/<slug>.png and are shown at 16:9. The files
- * currently there are generated stand-ins; drop real screenshots over them at
- * the same names and nothing else needs touching.
+ * external: false means a same-tab plain anchor. Balance Chart NEEDS that —
+ * /balancetheory is a static file under public/, served outside the router, so
+ * a react-router <Link> would fail to reach it.
  */
 export type Project = {
   slug: string;
@@ -24,58 +21,31 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "field-notes",
-    name: "Field Notes",
+    slug: "stack",
+    name: "Stack",
     description:
-      "A quiet place to write down what happened today, before the day rewrites it.",
-    image: "/projects/field-notes.png",
-    href: "https://example.com",
+      "The spatial browser I co-founded. Cards side by side instead of a row of tabs, for a calmer way of being online.",
+    image: "/projects/stack.png",
+    href: "https://stackbrowser.com/",
     external: true,
   },
   {
-    slug: "tempo",
-    name: "Tempo",
+    slug: "simpsonify",
+    name: "Simpsonify",
     description:
-      "Tracks how long things actually take, so the next estimate is less of a guess.",
-    image: "/projects/tempo.png",
-    href: "https://example.com",
+      "Upload a portrait, get yourself back as a Simpsons character. One photo, $1.99, delivered to your inbox.",
+    image: "/projects/simpsonify.png",
+    href: "https://www.simpsonify.us/",
     external: true,
   },
   {
-    slug: "north",
-    name: "North",
+    slug: "balance-chart",
+    name: "Balance Chart",
     description:
-      "One goal on screen at a time. Everything else waits its turn.",
-    image: "/projects/north.png",
-    href: "https://example.com",
-    external: true,
-  },
-  {
-    slug: "paper-trail",
-    name: "Paper Trail",
-    description:
-      "Keeps every decision next to the reason it was made, for the version of you who forgets.",
-    image: "/projects/paper-trail.png",
-    href: "https://example.com",
-    external: true,
-  },
-  {
-    slug: "signal",
-    name: "Signal",
-    description:
-      "Reading, watching and listening, filtered down to the handful worth the time.",
-    image: "/projects/signal.png",
-    href: "https://example.com",
-    external: true,
-  },
-  {
-    slug: "small-hours",
-    name: "Small Hours",
-    description:
-      "Half-built ideas that only make sense after midnight, kept somewhere they can grow.",
-    image: "/projects/small-hours.png",
-    href: "https://example.com",
-    external: true,
+      "A small tool for seeing how your life divides across body, work, people and meaning. The four always add up to 100, so something has to give.",
+    image: "/projects/balance-chart.png",
+    href: "/balancetheory",
+    external: false,
   },
 ];
 

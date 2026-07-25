@@ -39,18 +39,16 @@ Backlog — features, not cleanup
        Still undecided, on purpose: whether Stack Browser belongs in the same
        grid as the personal projects or is presented differently. Original note
        kept below for that reason.
-4b. [ ] **Populate the projects page with the real entries.** Edit the array in
-       `src/data/projects.ts` and drop real 16:9 screenshots over the generated
-       placeholders in `public/projects/`. Nothing else needs touching — the
-       page reads that one file. The three known entries:
-       - **balance theory** — `href: "/balancetheory"`, `external: false`. It is
-         a static file under `public/`, served outside the router, so it must
-         stay a plain anchor and must NOT become a react-router `<Link>`.
-       - **simpsonify** — `href: "https://simpsonify.us"`, `external: true`.
-       - **Stack Browser** — https://stackbrowser.com/. Still open: it is the
-         company he co-founded, not a side project, so decide whether it sits in
-         the same grid as the other two or is presented differently. Ask before
-         just adding it as a third card.
+4b. [x] **DONE 2026-07-25 — the real three are in.** Stack, Simpsonify and
+       Balance Chart, in that order, in `src/data/projects.ts`. George settled
+       the open question by putting Stack FIRST in the same grid as the other
+       two, so it is not presented differently. Descriptions were written from
+       each site's own copy. Grid is capped at THREE columns — that cap is the
+       1080px `max-width` on `.projects-shell` against the 300px track minimum,
+       so widening the shell silently makes it 4-up.
+4c. [ ] **Swap in George's real card images.** `public/projects/{stack,
+       simpsonify,balance-chart}.png` are generated stand-ins. Drop real 16:9
+       images over the same filenames; nothing else needs touching.
 5. [ ] **Point Coming Soon at the projects page instead of the resume.**
        `src/pages/Home.tsx` ends with "feel free to visit my [professional
        resume]" linking to `https://resume.iamgeorge.nl/`. That link becomes
