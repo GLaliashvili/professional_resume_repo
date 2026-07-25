@@ -69,6 +69,57 @@ Verified working, no action needed:
   each confirmed through Cloudflare, Google and Quad9 resolvers plus both
   Vercel nameservers. Before this session only SPF existed.
 
+2026-07-25 (balancetheory localization)
+---------------------------------------
+One commit, deployed and verified live: `826946b` — a Georgian/English toggle
+on `/balancetheory`. Only `public/balancetheory/index.html` changed; no DNS,
+hosting, build or dependency changes. (`src/data/projects.ts` had unrelated
+uncommitted edits of George's — deliberately left alone and NOT deployed.)
+
+What it does
+- A second corner button, `#lang-toggle`, sits under the palette icon at
+  top-left. Same 38px hand-drawn circle, same `--accent` border and
+  `--accent-bright` label, so it recolours with the palette picker like every
+  other interactive element on the page.
+- The label is the language it switches TO, not the one in use: `EN` while the
+  page is Georgian, `ქა` while it is English. Same for its tooltip.
+- The choice persists in `localStorage` under `bt-lang`. Default is Georgian.
+
+How it is wired
+- `window.BT_I18N` holds a single `STRINGS` table — title, `<html lang>`, the
+  four axis names, reset button, palette tooltip, SVG `aria-label`, slider
+  `aria-label`s, footer link. Its `apply()` rewrites the static DOM; switching
+  also dispatches `bt:lang`.
+- The main script no longer stores axis names in `AXES`; it reads them back
+  through `axisName(i)` and redraws the in-diagram labels on `bt:lang`. The
+  geometry is untouched by a switch, so values survive it.
+- The i18n script MUST stay above the main script — the main script draws on
+  load and needs the names for the current language already resolved.
+- `#picker` moved from `top: 60px` to `106px` so the palette card clears the
+  new button. Measured: toggles occupy 12–50 and 58–96, card starts at 106.
+
+The one real trap — layout that moves when the language does
+George caught the page sliding sideways on switch. `.side` was sized by its
+longest label, and "Relationships" is wider than "კავშირები", so the centered
+`.layout` shifted ~10px. Fixed by pinning the width rather than the text:
+- desktop `.side { width: 200px; flex: none }` (200 clears the widest label in
+  either language at the largest clamped font size), plus `white-space: nowrap`
+  on `.panel label` so a long translation cannot wrap and reflow the rows;
+- mobile `.panel` grid first column `max-content` -> a fixed `110px`, so the
+  sliders and read-outs start at the same x in both languages.
+Anything added to this page whose text is translated must be pinned the same
+way. Verified at 1440 / 1024 / 500px: `#stage`, all four number fields, labels,
+sliders, read-outs, `#reset` and both corner toggles report identical
+left/top in Georgian and English.
+
+Verification
+Probe copies of the page in the scratchpad, clicked through with
+`--dump-dom` under headless Chrome: language A/B/back-again snapshots (strings,
+SVG labels, values preserved), a hue-slider run proving the new button follows
+`--accent`, and `getBoundingClientRect()` sweeps at three widths for the
+no-shift claim. After deploy, a cache-busted fetch of
+`https://iamgeorge.nl/balancetheory/` diffed byte-identical to the source file.
+
 2026-07-25 (session summary — Coming Soon polish)
 --------------------------------------------------
 Five commits, all deployed and verified live. Everything in this session was
