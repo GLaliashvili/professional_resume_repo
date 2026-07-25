@@ -160,14 +160,14 @@ export default function Home() {
         </p>
 
         <p style={{ margin: 0 }}>
-          While my garden is being planted, feel free to visit my{" "}
+          While my garden is being planted, feel free to check out some of{" "}
+          {/* same-tab, and NOT target="_blank" — /projects is part of this site,
+              so it should feel like navigating rather than leaving. */}
           <a
-            href="https://resume.iamgeorge.nl/"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/projects"
             style={{ color: "#f8766d", textDecoration: "none" }}
           >
-            professional resume
+            my projects
           </a>
         </p>
       </div>

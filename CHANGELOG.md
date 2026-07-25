@@ -4,9 +4,10 @@ Change Log
 OPEN — start here next session
 ------------------------------
 Carried over from 2026-07-25. Tick these off and delete them from this section.
-Four items closed on 2026-07-25 (palette picker everywhere + outside-tap
-dismiss, badge scaling, ninja press-and-hold, ninja frames/baseline/greeting);
-they are gone from this list and written up in the dated entries below.
+The projects page and the Coming Soon link swap closed on 2026-07-25 and are
+written up in the dated entry below, along with four items closed earlier that
+day (palette picker everywhere + outside-tap dismiss, badge scaling, ninja
+press-and-hold, ninja frames/baseline/greeting). Only cleanup chores are left.
 
 1. [ ] **Delete the Cloudflare Pages project and DNS zone.** `resume-8h2` under
        Workers & Pages, then the `iamgeorge.nl` zone itself. Nothing routes to
@@ -29,32 +30,7 @@ they are gone from this list and written up in the dated entries below.
 Backlog — features, not cleanup
 -------------------------------
 
-4. [x] **DONE 2026-07-25 — the projects page exists at `/projects`.** Built with
-       dummy content; George populates `src/data/projects.ts` with the real
-       entries. The three questions below were settled first: cards link
-       STRAIGHT AT the thing itself (no per-project pages hosted here), the page
-       wears the Coming Soon look rather than the balancetheory doodle, and each
-       card carries a real 16:9 image from `public/projects/`. Design is written
-       up in `docs/superpowers/specs/2026-07-25-projects-page-design.md`.
-       Still undecided, on purpose: whether Stack Browser belongs in the same
-       grid as the personal projects or is presented differently. Original note
-       kept below for that reason.
-4b. [x] **DONE 2026-07-25 — the real three are in.** Stack, Simpsonify and
-       Balance Chart, in that order, in `src/data/projects.ts`. George settled
-       the open question by putting Stack FIRST in the same grid as the other
-       two, so it is not presented differently. Descriptions were written from
-       each site's own copy. Grid is capped at THREE columns — that cap is the
-       1080px `max-width` on `.projects-shell` against the 300px track minimum,
-       so widening the shell silently makes it 4-up.
-4c. [ ] **Swap in George's real card images.** `public/projects/{stack,
-       simpsonify,balance-chart}.png` are generated stand-ins. Drop real 16:9
-       images over the same filenames; nothing else needs touching.
-5. [ ] **Point Coming Soon at the projects page instead of the resume.**
-       `src/pages/Home.tsx` ends with "feel free to visit my [professional
-       resume]" linking to `https://resume.iamgeorge.nl/`. That link becomes
-       the projects page once #4 exists. Depends on #4 — do not do this one
-       first or the link goes nowhere.
-6. [ ] **Optional, offered but never asked for:** alternate the ninja's two
+4. [ ] **Optional, offered but never asked for:** alternate the ninja's two
        frames on a ~400ms loop while held, so it reads as a repeating wave
        rather than a single pose change. Everything needed is in place — both
        frames are preloaded and registered, and the swap is already a pure
@@ -68,6 +44,88 @@ Verified working, no action needed:
   (`default._domainkey`, 408 chars) and DMARC (`p=none`) all publish and were
   each confirmed through Cloudflare, Google and Quad9 resolvers plus both
   Vercel nameservers. Before this session only SPF existed.
+
+2026-07-25 (the projects page)
+------------------------------
+Five commits, all deployed and verified live. New page at `/projects`, and the
+Coming Soon page now points at it. No DNS, hosting, mail or dependency changes.
+
+`72ead86` spec · `ca82887` page · `842e326` real entries + 3-up grid ·
+`43b6721` images · `8625ae1` George's copy · `<link swap>` Home.tsx
+
+What shipped
+- **`/projects`** — a grid of cards on the Coming Soon canvas (`#222`, system
+  font, `#f8766d` accent). Card = 16:9 image, name, one-line description, the
+  whole thing one `<a>` so keyboard focus and middle-click work for free.
+  Three real entries (Stack, Simpsonify, Balance Chart) and two inert
+  placeholders.
+- **Coming Soon** now closes with "feel free to check out some of **my
+  projects**" pointing at `/projects`, replacing the link to
+  `resume.iamgeorge.nl`. Same-tab and deliberately NOT `target="_blank"` — it
+  is part of this site, so it should feel like navigating, not leaving.
+
+Decisions George made, so do not reopen them
+- Cards link **straight at the thing itself**. No per-project pages are hosted
+  here. That is what kept this a one-page build.
+- The page wears the **Coming Soon look**, not the balancetheory doodle idiom.
+  The two are deliberately different.
+- **Stack sits first in the same grid** as the two personal projects. The old
+  open question of whether the company should be presented differently was
+  answered by George simply ordering it first.
+- The descriptions are **George's own words**. Do not rewrite them.
+
+How it is wired
+- Content is `src/data/projects.ts` — one exported array plus
+  `placeholderCount`. Adding, removing or reordering a project is an edit to
+  that file and nothing else; `Projects.tsx` never changes.
+- Balance Chart is `external: false`, a same-tab plain anchor. It has to be:
+  `/balancetheory` is a static file under `public/` served OUTSIDE the router,
+  and a react-router `<Link>` would never reach it. Verified in production that
+  `/balancetheory` without a trailing slash serves the real page.
+- Styles are `.projects-*` in `src/index.css`, NOT inline like `Home.tsx`. The
+  hover gating and the responsive columns are not expressible inline. Leave
+  Home's inline styling alone — it is load-bearing for the badge's `min()`
+  scaling.
+- Hover lifts the card 6px with a deepening shadow, gated behind
+  `(hover: hover) and (pointer: fine)`; touch gets the identical lift from
+  `:active`, so iOS's sticky `:hover` cannot strand a card raised.
+
+The one number that matters — the three-column cap
+The grid is `repeat(auto-fill, minmax(300px, 1fr))` with `gap: 24px`, and it is
+capped at three columns ONLY by `max-width: 1080px` on `.projects-shell`: a
+fourth column would need 4x300 + 3x24 = 1272px. **Widen that shell and the grid
+silently becomes 4-up.** It still falls to two columns near 700px and one on a
+phone, with no media queries to maintain.
+
+Card images
+`stack.jpg`, `simpsonify.jpg`, `balance-chart.png` in `public/projects/`, all
+1280x720 — 2x the ~640px a card ever shows, so they hold up on retina. All three
+sources were wider than 16:9 with the subject centred, so the crop came off the
+sides. Format is chosen by content: JPEG for the photographic two (48KB and
+78KB, against 406KB and 363KB as PNG, no visible difference at card size), PNG
+for Balance Chart because JPEG rings on its thin white axis lines over black.
+Apply the same rule to any future card image.
+
+Known, not a bug
+On a phone the grid is one column, so a card fills most of the screen. Flagged
+to George; he has not asked for the 2-up phone layout.
+
+Verification
+Headless Chrome against a local SPA server, then again against production with
+a cache-buster: DOM probe confirming six/three real cards, the placeholders
+rendered as `<div>` (nothing to hover, click or tab to) and `rel="noopener
+noreferrer"` on every external link; screenshots at 1440 / 1280 / 1000 / 700px
+for the column counts; live bundle hashes diffed against the local build to
+prove the deploy landed rather than a cached HIT; content-type and byte size
+checked on all three images.
+
+A caution learned here
+`vercel deploy --prod` uploads the LOCAL WORKING TREE. Mid-session this tree
+held a large uncommitted change from George's parallel session (the
+balancetheory language toggle), which a deploy would have shipped silently.
+Always `git status` before deploying and ask about anything you did not write.
+Also: bare `vercel --prod` now only prints help — the working form is
+`vercel deploy --prod --yes`.
 
 2026-07-25 (balancetheory localization)
 ---------------------------------------
