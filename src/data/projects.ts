@@ -2,8 +2,11 @@
  * The projects page content. This is the only file to edit when adding, removing
  * or reordering a project — Projects.tsx reads it and needs no changes.
  *
- * Images live in public/projects/<slug>.png and are shown at 16:9 (the files
- * there now are generated stand-ins; drop real images over the same names).
+ * Images live in public/projects/ and are shown at 16:9, centre-cropped by
+ * object-fit: cover. They are 1280x720 — 2x the ~640px a card ever shows, so
+ * they stay crisp on retina. Photographic ones are JPEG (a quarter the size at
+ * this quality); Balance Chart stays PNG because JPEG smears its thin white
+ * axis lines on black.
  *
  * external: false means a same-tab plain anchor. Balance Chart NEEDS that —
  * /balancetheory is a static file under public/, served outside the router, so
@@ -25,7 +28,7 @@ export const projects: Project[] = [
     name: "Stack",
     description:
       "The spatial browser I co-founded. Cards side by side instead of a row of tabs, for a calmer way of being online.",
-    image: "/projects/stack.png",
+    image: "/projects/stack.jpg",
     href: "https://stackbrowser.com/",
     external: true,
   },
@@ -34,7 +37,7 @@ export const projects: Project[] = [
     name: "Simpsonify",
     description:
       "Upload a portrait, get yourself back as a Simpsons character. One photo, $1.99, delivered to your inbox.",
-    image: "/projects/simpsonify.png",
+    image: "/projects/simpsonify.jpg",
     href: "https://www.simpsonify.us/",
     external: true,
   },
