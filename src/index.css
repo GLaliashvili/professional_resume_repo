@@ -4580,6 +4580,13 @@ html {
   vertical-align: middle;
   /* negative block margins stop the 56px art from stretching the 1.7 line box */
   margin: -14px 2px -14px 6px;
+  /* Stand the ninja ON the text baseline instead of dangling below it. The art
+     has ~10 transparent rows under the feet in the 168px asset, so the feet sit
+     at 94% of the box, not at its bottom edge — this offset is measured from
+     the rendered page (feet vs. a zero-height baseline probe), not derived.
+     Re-measure if the 56px size or the artwork's padding changes. */
+  position: relative;
+  top: -20px;
   /* a press must not summon iOS's "Save Image" callout or the grey tap flash,
      and must not wait on the double-tap-to-zoom delay */
   -webkit-touch-callout: none;
@@ -4593,7 +4600,12 @@ html {
   width: 100%;
   height: 100%;
   display: block;
-  transition: opacity 140ms ease, transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* opacity ONLY. The two frames must occupy the exact same box at the exact
+     same scale, so nothing here may translate, scale or otherwise move them —
+     the swap has to read as one drawing changing pose, not as art that jumps.
+     There used to be a translateY(-5px) scale(1.07) lift on raise; it made the
+     waving frame look like it shifted up and grew. Do not reintroduce it. */
+  transition: opacity 140ms ease;
   -webkit-user-drag: none;
   user-select: none;
   pointer-events: none; /* the span owns the gesture, not the two frames */
@@ -4609,15 +4621,11 @@ html {
 @media (hover: hover) and (pointer: fine) {
   .avatar-wave:hover .idle { opacity: 0; }
   .avatar-wave:hover .wave { opacity: 1; }
-  .avatar-wave:hover img { transform: translateY(-5px) scale(1.07); }
 }
 
 .avatar-wave.is-raised .idle { opacity: 0; }
 .avatar-wave.is-raised .wave { opacity: 1; }
-.avatar-wave.is-raised img { transform: translateY(-5px) scale(1.07); }
 
 @media (prefers-reduced-motion: reduce) {
   .avatar-wave img { transition: opacity 100ms linear; }
-  .avatar-wave:hover img,
-  .avatar-wave.is-raised img { transform: none; }
 }

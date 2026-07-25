@@ -6,6 +6,33 @@ export default function Home() {
   // latched by a tap. Mouse users get it too, which costs nothing.
   const [raised, setRaised] = React.useState(false);
 
+  // One-shot attention wave: hand up 1s after load, back down 750ms later.
+  // Never repeats — it is a greeting, not an idle loop.
+  const [autoWave, setAutoWave] = React.useState(false);
+  const timers = React.useRef<number[]>([]);
+
+  const cancelAutoWave = React.useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+    setAutoWave(false);
+  }, []);
+
+  React.useEffect(() => {
+    timers.current = [
+      window.setTimeout(() => setAutoWave(true), 1000),
+      window.setTimeout(() => setAutoWave(false), 1750),
+    ];
+    // clearing on unmount stops a timer firing into an unmounted component
+    return cancelAutoWave;
+  }, [cancelAutoWave]);
+
+  // A press during the greeting cancels it outright. Without this the pending
+  // 1750ms timer would drop the hand mid-press, or leave it up after release.
+  const press = () => {
+    cancelAutoWave();
+    setRaised(true);
+  };
+
   return (
     <div
       style={{
@@ -97,9 +124,9 @@ export default function Home() {
         <p style={{ fontWeight: 700, color: "#ffffff", margin: "0 0 28px" }}>
           Hi{" "}
           <span
-            className={"avatar-wave" + (raised ? " is-raised" : "")}
+            className={"avatar-wave" + (raised || autoWave ? " is-raised" : "")}
             aria-hidden="true"
-            onPointerDown={() => setRaised(true)}
+            onPointerDown={press}
             onPointerUp={() => setRaised(false)}
             // cancel fires when the browser steals the gesture (a scroll starts,
             // the app backgrounds); without it the hand would stay up forever

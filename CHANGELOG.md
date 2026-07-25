@@ -68,6 +68,57 @@ Verified working, no action needed:
   each confirmed through Cloudflare, Google and Quad9 resolvers plus both
   Vercel nameservers. Before this session only SPF existed.
 
+2026-07-25 (ninja frames)
+-------------------------
+Summary
+Replaced the waving frame with art whose skin matches the idle frame, removed
+the lift/scale so the two frames never move or resize, stood the ninja on the
+text baseline, and added a one-shot greeting wave 1s after load.
+
+Details
+- Standing on the baseline: the avatar used to hang ~20px below the line it sits
+  on. `.avatar-wave` now takes `position: relative; top: -20px`. That value is
+  MEASURED, not derived — a zero-height inline-block probe gives the true text
+  baseline, and the feet are at 158/168 of the box because the art carries ten
+  transparent rows beneath them. The result puts the feet 0.37px below the
+  baseline at both 390px and 1280px. `position: relative` is deliberate: it
+  shifts the art without touching layout, so the line box stays 28px and no
+  text moves. Re-measure if the 56px size or the artwork's padding changes.
+- Greeting wave: 1s after load the hand goes up for 750ms, once, then down. It
+  is a separate `autoWave` state OR-ed with the press state, not a fake press.
+  A press cancels it outright, clearing both pending timers — otherwise the
+  1750ms timer would drop the hand in the middle of a real press, or leave it
+  up after the user released. Verified in both collision directions: pressing
+  during the greeting (up at 1100/1300, down from 1500 on) and pressing before
+  it (the greeting never fires at all). Timing measured with a MutationObserver
+  on the class: up at 1004ms, down at 1754ms, exactly one raise in six seconds.
+  The effect cleanup also clears the timers so they cannot fire into an
+  unmounted component.
+- Skin mismatch, confirmed by sampling the face region: the old waving frame's
+  dominant skin was rgb(252,190,125) against the idle frame's rgb(253,198,138),
+  so the face shifted tone mid-crossfade. George supplied replacement art whose
+  dominant skin samples at rgb(253,198,138) — an exact match. `design/source/
+  avatar-hi-tb-1172.png` replaced, `public/avatar-hi-tb.png` regenerated with
+  the documented LANCZOS 1172->168 recipe. The Desktop original is untouched.
+- The apparent "second frame moves up / gets bigger" was
+  `transform: translateY(-5px) scale(1.07)`, applied on raise. It was on `img`,
+  so it moved BOTH frames equally — but since it fired exactly when the frames
+  swapped, it read as the waving frame jumping. Removed from both the hover and
+  the .is-raised rules, and the transform half of the transition with it. The
+  swap is now a pure 140ms opacity crossfade. The reduced-motion block shrinks
+  to just the faster fade, since there is no longer any motion to suppress.
+  DO NOT reintroduce a lift here — it is the thing that was wrong.
+- Registration checked directly on the shipped 168px pair rather than trusting
+  the artwork: identical canvas size, feet baseline within 1px, hood top within
+  2px, legs within 2px — all under 0.7px at the 56px render size. A 50/50 blend
+  of the two frames shows hood, body, belt and legs landing on the same pixels,
+  with ghosting only where the pose and the eye expression genuinely differ.
+- Probe on the built page asserts what the requirement actually says: both
+  frames share one bounding box at rest, neither box changes when raised, the
+  two boxes stay identical while raised, and computed transform is `none`
+  throughout. Plus the press/release cycle still works and the wave frame
+  resolves to the new asset. All 12 assertions pass.
+
 2026-07-25 (Coming Soon mobile)
 -------------------------------
 Summary

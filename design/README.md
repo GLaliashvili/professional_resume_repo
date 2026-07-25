@@ -11,6 +11,18 @@ so the assets can be regenerated at different sizes later.
 | `avatar-tb-1172.png` | Coming Soon avatar, idle frame | `public/avatar-tb.png` (168px) |
 | `avatar-hi-tb-1172.png` | Coming Soon avatar, hover/waving frame | `public/avatar-hi-tb.png` (168px) |
 
+The waving frame was REPLACED on 2026-07-25: the previous artwork's skin was
+`rgb(252,190,125)` against the idle frame's `rgb(253,198,138)`, so the face
+changed tone as the frames crossfaded. The current pair matches exactly. The
+superseded art is not kept here — it is in git history, and a frame with the
+wrong palette is not worth shipping in the repo as provenance.
+
+Frames must stay REGISTERED: same canvas size, and the body, hood, belt and
+feet on the same pixels, so only the pose changes when they swap. The CSS
+deliberately applies no transform to them, so any misalignment left in the
+artwork is visible directly. Current pair agrees to within 1-2px at 168 (under
+0.7px at the 56px render), which reads as static.
+
 ## Regenerating
 
 Favicons — nearest-neighbour keeps the pixel-art blocks hard-edged, and 512→32
