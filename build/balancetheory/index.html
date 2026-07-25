@@ -77,10 +77,42 @@
   }
   #picker-toggle svg circle { fill: currentColor; stroke: none; }
 
+  /* ======================= LANGUAGE TOGGLE — START =========================
+     Sits directly under #picker-toggle and borrows its shape and colours, so
+     the two read as one stack of corner controls. The label is the language it
+     switches *to*, not the one in use. */
+  #lang-toggle {
+    position: fixed;
+    top: calc(58px + env(safe-area-inset-top, 0px)); /* clears #picker-toggle */
+    left: calc(12px + env(safe-area-inset-left, 0px));
+    z-index: 21;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    font-family: var(--doodle-font);
+    font-size: 14px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    color: var(--accent-bright);
+    background: transparent;
+    border: 1.6px solid var(--accent);
+    border-radius: 54% 46% 42% 58% / 52% 48% 52% 48%; /* hand-drawn circle */
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #lang-toggle:hover { color: var(--muted); border-color: var(--ink-faint); }
+  #lang-toggle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.25);
+  }
+  /* ======================== LANGUAGE TOGGLE — END ========================== */
+
   #picker {
     position: fixed;
-    /* clears the toggle so the card never sits on top of it */
-    top: calc(60px + env(safe-area-inset-top, 0px));
+    /* clears both corner toggles so the card never sits on top of them */
+    top: calc(106px + env(safe-area-inset-top, 0px));
     left: calc(12px + env(safe-area-inset-left, 0px));
     z-index: 20;
     width: 232px;
@@ -168,8 +200,14 @@
 
   svg { width: 100%; height: 100%; display: block; touch-action: none; }
 
+  /* Fixed width on purpose: the column is otherwise sized by its longest label,
+     so switching language would resize it and slide the centered diagram
+     sideways. 200px clears the widest label in either language at the largest
+     clamped font size. */
   .side {
     align-self: stretch;
+    width: 200px;
+    flex: none;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -195,6 +233,7 @@
     letter-spacing: 0.14em;
     color: var(--muted);
     cursor: pointer;
+    white-space: nowrap; /* a long translation must not wrap and reflow the rows */
   }
 
   .panel .num {
@@ -297,6 +336,8 @@
     }
 
     .side { width: 100%; align-items: stretch; }
+    /* mobile is a full-width grid, so the desktop fixed width is not needed —
+       the label column below is what has to stay language-independent */
 
     /* one line per axis: label | slider | read-out. The shared grid keeps the
        sliders aligned no matter how wide the longest label is. */
@@ -306,7 +347,9 @@
       padding: 0 6px;
       box-sizing: border-box;
       display: grid;
-      grid-template-columns: max-content minmax(0, 1fr) max-content;
+      /* fixed label column: max-content would resize with the language and
+         shift every slider sideways */
+      grid-template-columns: 110px minmax(0, 1fr) max-content;
       align-items: center;
       column-gap: 10px;
       row-gap: 4px;
@@ -445,6 +488,10 @@
   </svg>
 </button>
 
+<!-- ===================== LANGUAGE TOGGLE — START ===================== -->
+<button id="lang-toggle" type="button"><span id="lang-label">EN</span></button>
+<!-- ====================== LANGUAGE TOGGLE — END ====================== -->
+
 <div id="picker" hidden>
   <h4>palette</h4>
   <div class="fld">
@@ -518,20 +565,118 @@
 
 <footer class="footer">
   <hr/>
-  <a class="title" href="https://en.wikipedia.org/wiki/Positive_psychotherapy" target="_blank" rel="noopener">პეზეშკიანის ბალანსის მოდელი</a>
+  <a class="title" id="model-link" href="https://en.wikipedia.org/wiki/Positive_psychotherapy" target="_blank" rel="noopener">პეზეშკიანის ბალანსის მოდელი</a>
 </footer>
+
+<!-- ===================== LANGUAGE TOGGLE — START =====================
+     Every piece of copy on the page lives in STRINGS. Static text is rewritten
+     here; the diagram's own labels are redrawn by the main script, which reads
+     the axis names back out of this module and listens for 'bt:lang'.
+     Must stay above the main script — that script draws on load and needs the
+     names for the current language already resolved. -->
+<script>
+window.BT_I18N = (function () {
+  'use strict';
+
+  var STRINGS = {
+    ka: {
+      htmlLang: 'ka',
+      title: 'ბალანსის თეორია',
+      axes: ['სხეული', 'საქმე', 'კავშირები', 'საზრისი'],
+      diagram: 'ბალანსის თეორია: სხეული, საქმე, კავშირები, საზრისი',
+      colors: 'ფერები',
+      reset: 'თავიდან',
+      model: 'პეზეშკიანის ბალანსის მოდელი',
+      // the button shows the language it switches *to*
+      other: 'EN',
+      otherLabel: 'Switch to English'
+    },
+    en: {
+      htmlLang: 'en',
+      title: 'The Balance Theory',
+      axes: ['Body', 'Work', 'Relationships', 'Meaning'],
+      diagram: 'Balance theory: body, work, relationships, meaning',
+      colors: 'colors',
+      reset: 'reset',
+      model: "Peseschkian's Balance Model",
+      other: 'ქა',
+      otherLabel: 'ქართულად გადართვა'
+    }
+  };
+
+  var KEY = 'bt-lang';
+  var lang = 'ka';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'ka' || saved === 'en') lang = saved;
+  } catch (e) { /* private mode: fall back to the default */ }
+
+  function strings() { return STRINGS[lang]; }
+
+  function apply() {
+    var s = strings();
+
+    document.documentElement.lang = s.htmlLang;
+    document.title = s.title;
+
+    var picker = document.getElementById('picker-toggle');
+    picker.title = s.colors;
+    picker.setAttribute('aria-label', s.colors);
+
+    document.getElementById('svg').setAttribute('aria-label', s.diagram);
+
+    var reset = document.getElementById('reset');
+    reset.title = s.reset;
+    reset.setAttribute('aria-label', s.reset);
+    reset.querySelector('.reset-text').textContent = s.reset;
+
+    var labels = document.querySelectorAll('.panel label');
+    var ranges = document.querySelectorAll('.panel .range');
+    for (var i = 0; i < 4; i++) {
+      labels[i].textContent = s.axes[i];
+      ranges[i].setAttribute('aria-label', s.axes[i]);
+    }
+
+    document.getElementById('model-link').textContent = s.model;
+
+    var toggle = document.getElementById('lang-toggle');
+    document.getElementById('lang-label').textContent = s.other;
+    toggle.title = s.otherLabel;
+    toggle.setAttribute('aria-label', s.otherLabel);
+  }
+
+  function set(next) {
+    if (next === lang) return;
+    lang = next;
+    try { localStorage.setItem(KEY, lang); } catch (e) { /* nothing to do */ }
+    apply();
+    document.dispatchEvent(new CustomEvent('bt:lang'));
+  }
+
+  document.getElementById('lang-toggle').addEventListener('click', function () {
+    set(lang === 'ka' ? 'en' : 'ka');
+  });
+
+  apply();
+
+  return { strings: strings, lang: function () { return lang; }, set: set };
+})();
+</script>
+<!-- ====================== LANGUAGE TOGGLE — END ====================== -->
 
 <script>
 (function () {
   'use strict';
 
-  // order matches the input data-axis indices
+  // order matches the input data-axis indices; names come from BT_I18N
   var AXES = [
-    { name: 'სხეული',    dir: [0, -1] }, // top
-    { name: 'საქმე',     dir: [1, 0] },  // right
-    { name: 'კავშირები', dir: [0, 1] },  // bottom
-    { name: 'საზრისი',   dir: [-1, 0] }  // left
+    { dir: [0, -1] }, // top
+    { dir: [1, 0] },  // right
+    { dir: [0, 1] },  // bottom
+    { dir: [-1, 0] }  // left
   ];
+
+  function axisName(i) { return window.BT_I18N.strings().axes[i]; }
 
   // two geometries. mobile pushes the axis tips to within 2% of the viewBox
   // edge and lifts the side labels above the horizontal axis so nothing has to
@@ -652,19 +797,19 @@
     elRhombus.setAttribute('stroke-dasharray', G.dash);
 
     var fs = G.fontSize;
-    var top = '<text x="' + G.CX + '" y="' + (G.CY - G.L - G.PAD) + '" text-anchor="middle">' + AXES[0].name + '</text>';
-    var bottom = '<text x="' + G.CX + '" y="' + (G.CY + G.L + G.PAD + fs * 0.85) + '" text-anchor="middle">' + AXES[2].name + '</text>';
+    var top = '<text x="' + G.CX + '" y="' + (G.CY - G.L - G.PAD) + '" text-anchor="middle">' + axisName(0) + '</text>';
+    var bottom = '<text x="' + G.CX + '" y="' + (G.CY + G.L + G.PAD + fs * 0.85) + '" text-anchor="middle">' + axisName(2) + '</text>';
     var right, left;
 
     if (G.sideLabels === 'above') {
       // sit the side labels just above the horizontal axis at its tips, so the
       // axis itself can run all the way out to the edge
       var y = G.CY - G.PAD * 0.55;
-      right = '<text x="' + (G.CX + G.L) + '" y="' + y + '" text-anchor="end">' + AXES[1].name + '</text>';
-      left  = '<text x="' + (G.CX - G.L) + '" y="' + y + '" text-anchor="start">' + AXES[3].name + '</text>';
+      right = '<text x="' + (G.CX + G.L) + '" y="' + y + '" text-anchor="end">' + axisName(1) + '</text>';
+      left  = '<text x="' + (G.CX - G.L) + '" y="' + y + '" text-anchor="start">' + axisName(3) + '</text>';
     } else {
-      right = '<text x="' + (G.CX + G.L + G.PAD) + '" y="' + (G.CY + 9) + '" text-anchor="start">' + AXES[1].name + '</text>';
-      left  = '<text x="' + (G.CX - G.L - G.PAD) + '" y="' + (G.CY + 9) + '" text-anchor="end">' + AXES[3].name + '</text>';
+      right = '<text x="' + (G.CX + G.L + G.PAD) + '" y="' + (G.CY + 9) + '" text-anchor="start">' + axisName(1) + '</text>';
+      left  = '<text x="' + (G.CX - G.L - G.PAD) + '" y="' + (G.CY + 9) + '" text-anchor="end">' + axisName(3) + '</text>';
     }
 
     gLabels.innerHTML = top + right + bottom + left;
@@ -816,6 +961,9 @@
   }
   if (mq.addEventListener) mq.addEventListener('change', applyLayout);
   else if (mq.addListener) mq.addListener(applyLayout);
+
+  // only the in-diagram labels are language-dependent; the geometry is not
+  document.addEventListener('bt:lang', drawFrame);
 
   syncInputs(-1);
   drawFrame();
