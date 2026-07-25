@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import Projects from "./pages/Projects";
 import { Resume } from "./components/Resume";
 
 const ResumePage = () => (
@@ -23,6 +24,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={isResumeHost ? <ResumePage /> : <Home />} />
+        <Route path="/projects" element={<Projects />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/resume" element={<ResumePage />} />

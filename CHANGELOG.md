@@ -29,25 +29,28 @@ they are gone from this list and written up in the dated entries below.
 Backlog — features, not cleanup
 -------------------------------
 
-4. [ ] **Build a projects page — THIS IS THE NEXT SESSION'S MAIN JOB.** George
-       confirmed it on 2026-07-25 as the thing to start on. New route in
-       `src/App.tsx` alongside the existing `/blog` and `/resume` ones
-       (probably `/projects`), plus placeholder cards for what is coming.
-       Three entries to list, and they are three DIFFERENT kinds of thing —
-       worth settling with George before building, because it decides whether a
-       card links out or navigates in:
-       - **balance theory** — lives in THIS repo at `/balancetheory`, a static
-         self-contained page under `public/`. Internal link.
-       - **simpsonify** — a separate property; George owns `simpsonify.us`. Not
-         in this repo, and it has no page here yet. External link, or a stub
-         page on iamgeorge.nl? Ask.
-       - **Stack Browser** — https://stackbrowser.com/, the company he
-         co-founded, currently linked from the Coming Soon intro paragraph.
-         A company, not a side project, so decide whether it belongs in the
-         same grid as the other two or is presented differently.
-       ASK FIRST: George said "put simpsonify and balance theory pages there...
-       and Stack Browser page too", which could mean cards that link out, or
-       actual per-project pages hosted here. Those are very different builds.
+4. [x] **DONE 2026-07-25 — the projects page exists at `/projects`.** Built with
+       dummy content; George populates `src/data/projects.ts` with the real
+       entries. The three questions below were settled first: cards link
+       STRAIGHT AT the thing itself (no per-project pages hosted here), the page
+       wears the Coming Soon look rather than the balancetheory doodle, and each
+       card carries a real 16:9 image from `public/projects/`. Design is written
+       up in `docs/superpowers/specs/2026-07-25-projects-page-design.md`.
+       Still undecided, on purpose: whether Stack Browser belongs in the same
+       grid as the personal projects or is presented differently. Original note
+       kept below for that reason.
+4b. [ ] **Populate the projects page with the real entries.** Edit the array in
+       `src/data/projects.ts` and drop real 16:9 screenshots over the generated
+       placeholders in `public/projects/`. Nothing else needs touching — the
+       page reads that one file. The three known entries:
+       - **balance theory** — `href: "/balancetheory"`, `external: false`. It is
+         a static file under `public/`, served outside the router, so it must
+         stay a plain anchor and must NOT become a react-router `<Link>`.
+       - **simpsonify** — `href: "https://simpsonify.us"`, `external: true`.
+       - **Stack Browser** — https://stackbrowser.com/. Still open: it is the
+         company he co-founded, not a side project, so decide whether it sits in
+         the same grid as the other two or is presented differently. Ask before
+         just adding it as a third card.
 5. [ ] **Point Coming Soon at the projects page instead of the resume.**
        `src/pages/Home.tsx` ends with "feel free to visit my [professional
        resume]" linking to `https://resume.iamgeorge.nl/`. That link becomes

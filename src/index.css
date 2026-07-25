@@ -4634,3 +4634,166 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .avatar-wave img { transition: opacity 100ms linear; }
 }
+
+/* =========================================================================
+   /projects — the projects grid.
+
+   Home.tsx is styled entirely inline, which is why it has no hover states and
+   no media queries. This page needs both, so its styles live here as classes.
+   The palette is Home's: #222 canvas, #e9e9e9 text, #f8766d accent (the coral
+   already used for Home's resume link).
+   ========================================================================= */
+
+.projects-page {
+  min-height: 100vh;
+  background: #222222;
+  color: #e9e9e9;
+  padding: 64px 24px 96px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.projects-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.projects-header {
+  margin-bottom: 48px;
+}
+
+/* Accent at rest, receding to muted on hover — George's convention is that the
+   accent colour IS the signal of interactivity, the reverse of grey-until-hover. */
+.projects-back {
+  display: inline-block;
+  margin-bottom: 28px;
+  color: #f8766d;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .projects-back:hover { color: #8a8a8a; }
+}
+
+.projects-back:active { color: #8a8a8a; }
+
+.projects-title {
+  margin: 0 0 12px;
+  font-size: 34px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.projects-intro {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #b4b4b4;
+}
+
+/* auto-fill + minmax gives 4 across on a wide screen, 3 on a laptop, 2 on a
+   tablet and 1 on a phone, with no media queries to keep in sync. */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  background: #2b2b2b;
+  border: 1px solid #333333;
+  border-radius: 10px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: transform 180ms ease-out, box-shadow 180ms ease-out,
+    border-color 180ms ease-out;
+}
+
+.project-card-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #262626;
+}
+
+.project-card-body {
+  padding: 18px 18px 20px;
+}
+
+.project-card-name {
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.project-card-description {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #a8a8a8;
+}
+
+/* The lift. Gated to real pointers so iOS cannot strand a card in the raised
+   state via its sticky :hover — touch gets the same movement from :active
+   below, which releases with the finger. */
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
+    border-color: #454545;
+  }
+}
+
+.project-card:active {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
+  border-color: #454545;
+}
+
+.project-card:focus-visible {
+  outline: 2px solid #f8766d;
+  outline-offset: 3px;
+}
+
+/* Placeholders. Rendered as a div, so :hover and :active above cannot reach
+   them — but the rules are neutralised here anyway in case that ever changes. */
+.project-card-empty {
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  padding: 24px;
+  background: transparent;
+  border: 1px dashed #3a3a3a;
+  box-shadow: none;
+  color: #6f6f6f;
+  font-size: 15px;
+  text-align: center;
+  cursor: default;
+}
+
+.project-card-empty:hover,
+.project-card-empty:active {
+  transform: none;
+  box-shadow: none;
+  border-color: #3a3a3a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .project-card:hover,
+  .project-card:active {
+    transform: none;
+    transition: box-shadow 180ms ease-out, border-color 180ms ease-out;
+  }
+}
