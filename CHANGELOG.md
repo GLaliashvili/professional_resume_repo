@@ -1,6 +1,34 @@
 Change Log
 ==========
 
+OPEN — start here next session
+------------------------------
+Carried over from 2026-07-25. Tick these off and delete them from this section.
+
+1. [ ] **Delete the Cloudflare Pages project and DNS zone.** `resume-8h2` under
+       Workers & Pages, then the `iamgeorge.nl` zone itself. Nothing routes to
+       either — they were kept as the rollback for the DNS move. Safe to remove
+       from 2026-07-27 onward (48h after the cutover). Disconnect its GitHub
+       integration first so a stray push cannot resurrect a deployment.
+2. [ ] **Stop tracking `build/` in git.** `git rm -r --cached build` plus a
+       `.gitignore` line. It was only kept because Cloudflare Pages deployed
+       this repo and might have served the committed output; Pages is now out
+       of the serving path, so the risk is gone. Vercel builds from source
+       (`buildCommand: vite build`). Removes a lot of minified diff noise.
+3. [ ] **Add a DMARC record** (none exists). Start in monitor mode:
+       `_dmarc TXT "v=DMARC1; p=none; rua=mailto:hi@iamgeorge.nl; fo=1"`.
+       Leave it at `p=none` for a few weeks of reports, then tighten to
+       `p=quarantine` and eventually `p=reject`. DKIM only started being
+       published on 2026-07-25, so do not enforce before confirming it passes.
+4. [ ] **Decide the fate of the palette picker** on /balancetheory. It is
+       currently live and public on desktop. Keep, or remove the three blocks
+       banded `PALETTE PICKER — START/END` in the CSS, markup and script.
+
+Verified working, no action needed:
+- Email round-trip through `hi@iamgeorge.nl` tested in both directions after
+  the nameserver move — send and receive both confirmed by George on
+  2026-07-25. The DNS migration did not disturb mail.
+
 2026-07-25
 ----------
 Summary
