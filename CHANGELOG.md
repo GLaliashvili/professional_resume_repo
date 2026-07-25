@@ -1,6 +1,41 @@
 Change Log
 ==========
 
+2026-07-25
+----------
+Summary
+Moved DNS off Cloudflare to Vercel (Cloudflare now removed entirely), moved the resume subdomains from Cloudflare Pages to Vercel, restyled /balancetheory to a pink palette with a live palette picker, added a site-wide favicon, and replaced the Coming Soon wave emoji with an animated avatar.
+
+Details
+
+Hosting / DNS — Cloudflare fully decommissioned
+- `resume.iamgeorge.nl` and `cv.iamgeorge.nl` were served by a Cloudflare Pages project (`resume-8h2`) fed from this repo's GitHub main. Both are now Vercel domains on the `iamgeorge` project; their DNS records became `CNAME -> cname.vercel-dns.com`, DNS-only (Vercel cannot issue SSL through Cloudflare's proxy — an orange cloud leaves the subdomain in a cert error).
+- Nameservers moved from Cloudflare (`nash`/`raegan.ns.cloudflare.com`) to Vercel (`ns1`/`ns2.vercel-dns.com`) at Namecheap. The whole zone was staged at Vercel and verified record-by-record BEFORE the switch, so both providers answered identically and propagation was invisible. Namecheap took ~1h to push the delegation to the `.nl` registry; the Namecheap UI showed it saved long before the registry did.
+- Records now served by Vercel: apex (automatic, no explicit A record), `www`/`resume`/`cv` CNAMEs, 2x MX to privateemail.com (priority 10), SPF, google-site-verification.
+- NEW: DKIM (`default._domainkey`) is published for the first time. It existed at Namecheap but had never been put in DNS, so outgoing mail was unsigned. Note: records added to a Vercel zone before delegation do not serve — DKIM returned NXDOMAIN until the nameservers actually switched, then appeared immediately.
+- Cloudflare Email Routing is DISABLED and must stay that way. Its settings page lists five records as "Missing", which is the correct healthy state — clicking "Add missing records" would repoint MX at Cloudflare and break mail.
+
+Regression fixed: resume subdomain served the wrong page
+- GitHub main still had the pre-rewrite App that rendered the resume at every path, so Cloudflare Pages kept serving the resume on `resume.iamgeorge.nl`. Pushing the Coming Soon routing rewrite made `/` render Home on every host, taking the resume offline for ~10 minutes.
+- Fixed in `src/App.tsx`: both hosts serve the same bundle, so the root route now picks from `window.location.hostname` — `resume.` / `cv.` render the resume, everything else renders Home. `/resume` still works on every host.
+
+/balancetheory
+- Renamed `ბალანსის ზედაპირი` -> `ბალანსის თეორია` (title + SVG aria-label). The footer link stays `პეზეშკიანის ბალანსის მოდელი` — that is the name of Peseschkian's model, not the page.
+- Palette refactor: every colour now lives in ONE `:root` block. Previously it was split across CSS variables, `rgba()` tints with literal channel values, and hardcoded hex inside the SVG, which made recolouring a three-place change. The SVG now inherits via CSS rules (`#axes`, `#labels`, `#hatch line`, `#rhombus`, `.dot.vis`/`.dot.hit`) and tints use `rgba(var(--accent-rgb), a)`.
+- Colour went amber -> purple -> green -> pink (`--accent: #dc3887`). Neutrals are hue-rotated to match the accent rather than left warm, so the greys belong to the same family.
+- Palette picker (desktop only, collapsed by default, opened by a corner toggle): three sliders for accent hue, accent lightness and contrast, driving the `:root` properties live. Contrast 0 gives pure #000/#fff with no tint; higher values lift the black, drop the white and tint both. Hatch opacity is now derived from accent lightness (0.30 dark -> 0.15 bright) so the crosshatch cannot vanish behind a dark accent, which is what happened with the purple.
+- Axis pen weights thinned: desktop 6.5 -> 4.8, mobile 10 -> 7.4 (the ~1.54 ratio between them is what keeps the strokes looking equally heavy on both).
+
+Site-wide favicon
+- `public/favicon.ico` + `favicon-32/180/512.png`, generated from `design/source/favicon-pink-512.png` with nearest-neighbour so the pixel art stays crisp. Linked with absolute paths from both `index.html` and `public/balancetheory/index.html`, so subdirectories resolve correctly. Replaces an inline SVG octopus emoji.
+
+Coming Soon avatar
+- The `👋` emoji in `src/pages/Home.tsx` is now a 56px pixel-art avatar that swaps to a waving frame on hover, with a lift + slight scale on a springy easing. Both frames are stacked and cross-faded rather than swapping `src`, so the hover frame is decoded up front instead of flashing blank on first hover. Negative block margins keep the 56px art from stretching the 1.7 line box. `:active` covers touch; `prefers-reduced-motion` drops the bounce but keeps the swap.
+
+Other
+- `design/source/` holds the original artwork with a README covering how each shipped asset is regenerated. Not served — Vite only copies `public/`.
+- Namecheap/DKIM notes live in `../NC/NC.md`, deliberately OUTSIDE this repo: it is public on GitHub.
+
 2026-07-24
 ----------
 Summary

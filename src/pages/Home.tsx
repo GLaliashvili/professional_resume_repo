@@ -79,7 +79,12 @@ export default function Home() {
         }}
       >
         <p style={{ fontWeight: 700, color: "#ffffff", margin: "0 0 28px" }}>
-          Hi 👋 I am George
+          Hi{" "}
+          <span className="avatar-wave" aria-hidden="true">
+            <img className="idle" src="/avatar-tb.png" alt="" />
+            <img className="wave" src="/avatar-hi-tb.png" alt="" />
+          </span>{" "}
+          I am George
         </p>
 
         <p style={{ margin: "0 0 20px" }}>
