@@ -29,11 +29,25 @@ they are gone from this list and written up in the dated entries below.
 Backlog — features, not cleanup
 -------------------------------
 
-4. [ ] **Build a projects page.** List balancetheory and simpsonify now, with
-       placeholder cards for what is coming. New route in `src/App.tsx`
-       alongside the existing `/blog` and `/resume` ones (probably `/projects`).
-       balancetheory lives at `/balancetheory` in this repo; simpsonify is a
-       separate property (George owns simpsonify.us).
+4. [ ] **Build a projects page — THIS IS THE NEXT SESSION'S MAIN JOB.** George
+       confirmed it on 2026-07-25 as the thing to start on. New route in
+       `src/App.tsx` alongside the existing `/blog` and `/resume` ones
+       (probably `/projects`), plus placeholder cards for what is coming.
+       Three entries to list, and they are three DIFFERENT kinds of thing —
+       worth settling with George before building, because it decides whether a
+       card links out or navigates in:
+       - **balance theory** — lives in THIS repo at `/balancetheory`, a static
+         self-contained page under `public/`. Internal link.
+       - **simpsonify** — a separate property; George owns `simpsonify.us`. Not
+         in this repo, and it has no page here yet. External link, or a stub
+         page on iamgeorge.nl? Ask.
+       - **Stack Browser** — https://stackbrowser.com/, the company he
+         co-founded, currently linked from the Coming Soon intro paragraph.
+         A company, not a side project, so decide whether it belongs in the
+         same grid as the other two or is presented differently.
+       ASK FIRST: George said "put simpsonify and balance theory pages there...
+       and Stack Browser page too", which could mean cards that link out, or
+       actual per-project pages hosted here. Those are very different builds.
 5. [ ] **Point Coming Soon at the projects page instead of the resume.**
        `src/pages/Home.tsx` ends with "feel free to visit my [professional
        resume]" linking to `https://resume.iamgeorge.nl/`. That link becomes
@@ -53,6 +67,36 @@ Verified working, no action needed:
   (`default._domainkey`, 408 chars) and DMARC (`p=none`) all publish and were
   each confirmed through Cloudflare, Google and Quad9 resolvers plus both
   Vercel nameservers. Before this session only SPF existed.
+
+2026-07-25 (session summary — Coming Soon polish)
+--------------------------------------------------
+Five commits, all deployed and verified live. Everything in this session was
+front-end polish on `/` and `/balancetheory`; no DNS, hosting or mail changes.
+
+  2300f87  palette picker on every device + outside-tap dismiss
+  27f2740  COMING SOON badge scales like an image; ninja press-and-hold
+  0dfb3dd  matching ninja frames, baseline position, one-shot greeting wave
+  8719fbf  cleared closed items out of this open-tasks list
+  c7d7a05  lowered the ninja so his feet cross the baseline
+
+Four things this session established that are easy to break later, all
+documented in the entries below and worth reading before touching this page:
+- The badge's `16.9` divisor is a MEASURED width in em. Change the wording,
+  weight, tracking or padding and it must be re-measured.
+- The ninja's two frames must share one unchanging box: no transform, ever.
+  George rejected the lift/scale explicitly.
+- The ninja's `-13px` offset assumes the 56px size and the artwork's ten
+  transparent rows under the feet. Whole numbers only, or the pixel art softens.
+- The frames must stay registered and share a skin tone. One frame was replaced
+  this session for exactly that.
+
+Verification approach worth reusing: headless Chrome clamps its own window to
+~500px, so narrow layouts were measured inside same-origin iframes; behaviour
+was asserted with PointerEvent probes against the BUILT page rather than by
+reading the CSS. Three traps cost time and are written up below — CSS
+transitions do not advance predictably under --virtual-time-budget, React's
+state flush is not synchronous with dispatchEvent, and React derives
+onPointerLeave from pointerout + relatedTarget.
 
 2026-07-25 (ninja frames)
 -------------------------
