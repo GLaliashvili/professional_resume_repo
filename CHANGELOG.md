@@ -26,6 +26,39 @@ Carried over from 2026-07-25. Tick these off and delete them from this section.
        currently live and public on desktop. Keep, or remove the three blocks
        banded `PALETTE PICKER — START/END` in the CSS, markup and script.
 
+Backlog — features, not cleanup
+-------------------------------
+
+5. [ ] **Optimise the Coming Soon page for mobile.** `src/pages/Home.tsx` has
+       ZERO responsive handling — no media queries, no clamp(), no vw/vmin
+       units, all fixed px in inline styles. The intro block is a hard
+       `maxWidth: 640px` at `fontSize: 17px`, and the metallic COMING SOON pill
+       is fixed-size. Same class of problem /balancetheory had before
+       2026-07-24, so the approach there is a decent model: a real breakpoint
+       rather than shrinking everything proportionally. Note Home.tsx styles
+       inline, so a breakpoint needs either a CSS class in `src/index.css`
+       (as `.avatar-wave` does) or a matchMedia hook.
+6. [ ] **Adjust the ninja on Coming Soon.** George flagged it needs changes but
+       the specifics were not captured — ASK FIRST, do not guess. The knobs:
+       render size is `56px` in the `.avatar-wave` rule in `src/index.css`,
+       assets ship at 168px (3x) from `design/source/*-1172.png`, the hover
+       lift is `translateY(-5px) scale(1.07)` on a springy cubic-bezier, and
+       the negative block margins there stop the art from stretching the line
+       box — change the size and those margins need to change with it.
+       An offered-but-not-built option: alternate the two frames on a ~400ms
+       loop while hovering, so it reads as a repeating wave rather than a
+       single pose change.
+7. [ ] **Build a projects page.** List balancetheory and simpsonify now, with
+       placeholder cards for what is coming. New route in `src/App.tsx`
+       alongside the existing `/blog` and `/resume` ones (probably `/projects`).
+       balancetheory lives at `/balancetheory` in this repo; simpsonify is a
+       separate property (George owns simpsonify.us).
+8. [ ] **Point Coming Soon at the projects page instead of the resume.**
+       `src/pages/Home.tsx` currently ends with "feel free to visit my
+       [professional resume]" linking to `https://resume.iamgeorge.nl/`
+       (around line 113). That link becomes the projects page once #7 exists.
+       Depends on #7 — do not do this one first or the link goes nowhere.
+
 Verified working, no action needed:
 - Email round-trip through `hi@iamgeorge.nl` tested in both directions after
   the nameserver move — send and receive both confirmed by George on
