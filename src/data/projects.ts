@@ -27,7 +27,7 @@ export const projects: Project[] = [
     slug: "stack",
     name: "Stack",
     description:
-      "The spatial browser I co-founded. Cards side by side instead of a row of tabs, for a calmer way of being online.",
+      "The spatial browser I co-founded, with the goal of creating a more efficient and mindful way to navigate the web.",
     image: "/projects/stack.jpg",
     href: "https://stackbrowser.com/",
     external: true,
@@ -36,7 +36,7 @@ export const projects: Project[] = [
     slug: "simpsonify",
     name: "Simpsonify",
     description:
-      "Upload a portrait, get yourself back as a Simpsons character. One photo, $1.99, delivered to your inbox.",
+      "Upload your portrait, get it back as a Simpsons character. Started back when image-gen AIs did not have APIs, now it's just a fun side project.",
     image: "/projects/simpsonify.jpg",
     href: "https://www.simpsonify.us/",
     external: true,
@@ -45,7 +45,7 @@ export const projects: Project[] = [
     slug: "balance-chart",
     name: "Balance Chart",
     description:
-      "A small tool for seeing how your life divides across body, work, people and meaning. The four always add up to 100, so something has to give.",
+      "A small tool for seeing how your life divides across different areas. I built this instead of actually practicing the exercise - says something about my balance...",
     image: "/projects/balance-chart.png",
     href: "/balancetheory",
     external: false,
