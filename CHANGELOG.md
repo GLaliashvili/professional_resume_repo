@@ -62,14 +62,23 @@ the lift/scale so the two frames never move or resize, stood the ninja on the
 text baseline, and added a one-shot greeting wave 1s after load.
 
 Details
-- Standing on the baseline: the avatar used to hang ~20px below the line it sits
-  on. `.avatar-wave` now takes `position: relative; top: -20px`. That value is
-  MEASURED, not derived — a zero-height inline-block probe gives the true text
-  baseline, and the feet are at 158/168 of the box because the art carries ten
-  transparent rows beneath them. The result puts the feet 0.37px below the
-  baseline at both 390px and 1280px. `position: relative` is deliberate: it
-  shifts the art without touching layout, so the line box stays 28px and no
-  text moves. Re-measure if the 56px size or the artwork's padding changes.
+- Vertical position: the avatar used to hang ~20px below the line it sits on.
+  `.avatar-wave` now takes `position: relative; top: -13px`, which puts the feet
+  7.37px below the text baseline — crossing it slightly, per the marked-up
+  reference George supplied. It first went to -20px (feet exactly ON the
+  baseline), which read as too high; -13px was the follow-up.
+  The value is MEASURED, not derived — a zero-height inline-block probe gives
+  the true text baseline, and the feet are at 158/168 of the box because the art
+  carries ten transparent rows beneath them. Identical at 390px and 1280px.
+  READING THAT REFERENCE IMAGE: its two guide lines are the text's LINE BOX, not
+  the baseline — anchoring on them would have placed the ninja ~3px too low. The
+  baseline is the glyph bottom of "Hi". Scale was confirmed two independent ways
+  (cap height, and the avatar's own art height), agreeing at 9.86x vs 9.89x,
+  which is what makes ~7px trustworthy rather than a guess.
+  Keep the offset a WHOLE number: a half-pixel shift softens the pixel art.
+  `position: relative` is deliberate — it shifts the art without touching
+  layout, so the line box stays 28px and no text moves. Re-measure if the 56px
+  size or the artwork's padding changes.
 - Greeting wave: 1s after load the hand goes up for 750ms, once, then down. It
   is a separate `autoWave` state OR-ed with the press state, not a fake press.
   A press cancels it outright, clearing both pending timers — otherwise the

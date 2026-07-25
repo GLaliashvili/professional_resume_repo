@@ -4580,13 +4580,18 @@ html {
   vertical-align: middle;
   /* negative block margins stop the 56px art from stretching the 1.7 line box */
   margin: -14px 2px -14px 6px;
-  /* Stand the ninja ON the text baseline instead of dangling below it. The art
-     has ~10 transparent rows under the feet in the 168px asset, so the feet sit
-     at 94% of the box, not at its bottom edge — this offset is measured from
-     the rendered page (feet vs. a zero-height baseline probe), not derived.
-     Re-measure if the 56px size or the artwork's padding changes. */
+  /* Stand the ninja just below the text baseline, feet slightly overlapping it,
+     per the reference George marked up on 2026-07-25 (~7px below the baseline —
+     derived from that image by anchoring on the glyph bottoms of "Hi", NOT on
+     the guide lines in it, which are the line box). It used to dangle ~20px
+     below; -20px put the feet exactly ON the baseline, which read as too high.
+     The art has ~10 transparent rows under the feet in the 168px asset, so the
+     feet sit at 94% of the box, not at its bottom edge. This value is measured
+     against a zero-height baseline probe on the rendered page, not derived —
+     re-measure if the 56px size or the artwork's padding changes. Keep it a
+     WHOLE number: a half-pixel offset softens the pixel art. */
   position: relative;
-  top: -20px;
+  top: -13px;
   /* a press must not summon iOS's "Save Image" callout or the grey tap flash,
      and must not wait on the double-tap-to-zoom delay */
   -webkit-touch-callout: none;
