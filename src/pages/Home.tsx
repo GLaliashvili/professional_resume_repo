@@ -1,6 +1,11 @@
 import React from "react";
 
 export default function Home() {
+  // Press-and-hold raises the hand on touch. Desktop keeps using :hover; this
+  // is the touch equivalent, held for the duration of the press rather than
+  // latched by a tap. Mouse users get it too, which costs nothing.
+  const [raised, setRaised] = React.useState(false);
+
   return (
     <div
       style={{
@@ -18,48 +23,59 @@ export default function Home() {
         WebkitFontSmoothing: "antialiased",
       }}
     >
-      {/* Metallic COMING SOON badge — raised chrome bezel with engraved inner panel */}
+      {/* Metallic COMING SOON badge — raised chrome bezel with engraved inner panel.
+          It scales like an IMAGE: every dimension below (padding, radius, shadow
+          offsets, the gap under it) is expressed in em off this one font-size, so
+          shrinking the font shrinks the whole badge uniformly and the aspect ratio
+          is fixed by construction. The text can never wrap — see nowrap on the span.
+          16.9 is the badge's full width in em, measured from the rendered page; the
+          font-size is whatever keeps that width inside the viewport less the 24px
+          page padding on each side, capped at the 21px desktop size. Re-measure that
+          divisor if the wording, weight, tracking or padding ever changes. */}
       <div
         style={{
+          fontSize: "min(21px, calc((100vw - 48px) / 16.9))",
           borderRadius: "9999px",
-          padding: "5px",
+          padding: "0.238em",
           // Raised outer bezel: bright top, darker bottom
           background:
             "linear-gradient(180deg, #ffffff 0%, #ededed 42%, #cfcfcf 72%, #e6e6e6 100%)",
           // Cast shadow underneath + bezel highlights/lowlights
           boxShadow: [
-            "0 24px 30px -10px rgba(0,0,0,0.72)",
-            "0 8px 14px -6px rgba(0,0,0,0.55)",
-            "inset 0 2px 2px rgba(255,255,255,0.95)",
-            "inset 0 -3px 4px rgba(0,0,0,0.18)",
+            "0 1.143em 1.429em -0.476em rgba(0,0,0,0.72)",
+            "0 0.381em 0.667em -0.286em rgba(0,0,0,0.55)",
+            "inset 0 0.095em 0.095em rgba(255,255,255,0.95)",
+            "inset 0 -0.143em 0.19em rgba(0,0,0,0.18)",
           ].join(", "),
-          marginBottom: "96px",
+          marginBottom: "4.571em",
         }}
       >
         <div
           style={{
             borderRadius: "9999px",
-            padding: "19px 50px",
+            padding: "0.905em 2.381em",
             // Recessed inner face: darker at top edge to read as engraved
             background:
               "linear-gradient(180deg, #dcdcdc 0%, #f1f1f1 55%, #fcfcfc 100%)",
             boxShadow: [
-              "inset 0 3px 6px rgba(0,0,0,0.30)",
-              "inset 0 6px 10px -6px rgba(0,0,0,0.22)",
-              "inset 0 -2px 3px rgba(255,255,255,0.9)",
+              "inset 0 0.143em 0.286em rgba(0,0,0,0.30)",
+              "inset 0 0.286em 0.476em -0.286em rgba(0,0,0,0.22)",
+              "inset 0 -0.095em 0.143em rgba(255,255,255,0.9)",
             ].join(", "),
           }}
         >
           <span
             style={{
               display: "block",
-              fontSize: "21px",
+              // no font-size here on purpose: it inherits the fluid one above,
+              // which is what keeps every em in this badge on the same scale
               fontWeight: 600,
               letterSpacing: "0.32em",
               paddingLeft: "0.32em",
+              whiteSpace: "nowrap",
               color: "#565656",
               // Engraved text: dark glyph with a soft light edge below
-              textShadow: "0 1px 0 rgba(255,255,255,0.75)",
+              textShadow: "0 0.048em 0 rgba(255,255,255,0.75)",
               fontFamily:
                 "'Montserrat', system-ui, -apple-system, sans-serif",
             }}
@@ -80,7 +96,16 @@ export default function Home() {
       >
         <p style={{ fontWeight: 700, color: "#ffffff", margin: "0 0 28px" }}>
           Hi{" "}
-          <span className="avatar-wave" aria-hidden="true">
+          <span
+            className={"avatar-wave" + (raised ? " is-raised" : "")}
+            aria-hidden="true"
+            onPointerDown={() => setRaised(true)}
+            onPointerUp={() => setRaised(false)}
+            // cancel fires when the browser steals the gesture (a scroll starts,
+            // the app backgrounds); without it the hand would stay up forever
+            onPointerCancel={() => setRaised(false)}
+            onPointerLeave={() => setRaised(false)}
+          >
             <img className="idle" src="/avatar-tb.png" alt="" />
             <img className="wave" src="/avatar-hi-tb.png" alt="" />
           </span>{" "}

@@ -38,9 +38,10 @@
   .dot.hit { fill: transparent; stroke: none; }
 
   /* ======================== PALETTE PICKER — START ===========================
-     Desktop only, collapsed by default, opened with the corner toggle. To pull
-     it out entirely delete this CSS block, the #picker-toggle + #picker markup,
-     and the script block under the same banner. Nothing else references them. */
+     Available on every device, collapsed by default, opened with the corner
+     toggle (mirrors #reset in the opposite corner). To pull it out entirely
+     delete this CSS block, the #picker-toggle + #picker markup, and the script
+     block under the same banner. Nothing else references them. */
 
   /* mirrors #reset in the opposite corner */
   #picker-toggle {
@@ -111,8 +112,19 @@
     height: 18px;
     accent-color: var(--accent);
   }
+  /* Mobile: same picker, sized for a thumb. The card is deliberately allowed to
+     overlay the diagram — it is closed by default and the toggle dismisses it,
+     so it never competes with the axis sliders for vertical room. */
   @media (max-width: 720px) {
-    #picker, #picker-toggle { display: none; }
+    #picker {
+      /* never wider than the screen on a 320px phone */
+      width: min(268px, calc(100vw - 24px));
+      padding: 13px 15px 15px;
+      font-size: 12px;
+    }
+    #picker .fld { margin-bottom: 11px; }
+    /* taller strip than desktop's 18px so the native thumb is grabbable */
+    #picker input[type="range"] { height: 30px; }
   }
   /* ========================= PALETTE PICKER — END ============================ */
 
@@ -881,10 +893,27 @@
   // ---------- open / close ----------
   var panel = document.getElementById('picker');
   var toggle = document.getElementById('picker-toggle');
-  toggle.addEventListener('click', function () {
-    var open = panel.hasAttribute('hidden');
+
+  function setOpen(open) {
     if (open) panel.removeAttribute('hidden'); else panel.setAttribute('hidden', '');
     toggle.setAttribute('aria-expanded', String(open));
+  }
+
+  toggle.addEventListener('click', function () {
+    setOpen(panel.hasAttribute('hidden'));
+  });
+
+  // Click or tap anywhere outside dismisses it. pointerdown (not click) so it
+  // closes on the same gesture that starts a drag on the diagram underneath,
+  // and one listener covers mouse, touch and pen alike.
+  //
+  // The toggle is excluded deliberately: without that check its own pointerdown
+  // would close the panel here and its click would immediately reopen it, so
+  // tapping the icon to close would look like nothing happened.
+  document.addEventListener('pointerdown', function (e) {
+    if (panel.hasAttribute('hidden')) return;
+    if (panel.contains(e.target) || toggle.contains(e.target)) return;
+    setOpen(false);
   });
 })();
 </script>

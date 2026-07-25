@@ -30,25 +30,24 @@ Carried over from 2026-07-25. Tick these off and delete them from this section.
 Backlog — features, not cleanup
 -------------------------------
 
-5. [ ] **Optimise the Coming Soon page for mobile.** `src/pages/Home.tsx` has
-       ZERO responsive handling — no media queries, no clamp(), no vw/vmin
-       units, all fixed px in inline styles. The intro block is a hard
-       `maxWidth: 640px` at `fontSize: 17px`, and the metallic COMING SOON pill
-       is fixed-size. Same class of problem /balancetheory had before
-       2026-07-24, so the approach there is a decent model: a real breakpoint
-       rather than shrinking everything proportionally. Note Home.tsx styles
-       inline, so a breakpoint needs either a CSS class in `src/index.css`
-       (as `.avatar-wave` does) or a matchMedia hook.
-6. [ ] **Adjust the ninja on Coming Soon.** George flagged it needs changes but
-       the specifics were not captured — ASK FIRST, do not guess. The knobs:
-       render size is `56px` in the `.avatar-wave` rule in `src/index.css`,
-       assets ship at 168px (3x) from `design/source/*-1172.png`, the hover
-       lift is `translateY(-5px) scale(1.07)` on a springy cubic-bezier, and
-       the negative block margins there stop the art from stretching the line
-       box — change the size and those margins need to change with it.
-       An offered-but-not-built option: alternate the two frames on a ~400ms
-       loop while hovering, so it reads as a repeating wave rather than a
-       single pose change.
+5. [x] **DONE 2026-07-25 — the COMING SOON badge scales like an image.** That
+       was the reported symptom: below ~414px the pill squashed inward, grew
+       taller and split the text across two lines. It is now uniformly scaled
+       with a fixed aspect ratio and can never wrap. Details in the 2026-07-25
+       entry below. The old note here proposed a breakpoint or a matchMedia
+       hook because inline styles cannot hold a media query — that turned out
+       to be unnecessary: `min()`/`calc()` work fine inline, and proportional
+       scaling was the correct answer for this element anyway.
+       DELIBERATELY LEFT ALONE, checked and fine at 320px: the 17px body copy
+       and the 640px max-width on the intro block.
+6. [x] **DONE 2026-07-25 — the ninja is press-and-hold on touch.** George's
+       specifics, given on 2026-07-25: one tap raised the hand and every later
+       tap did nothing, which did not match desktop. Now the hand is up for the
+       duration of a press and drops on release. Root cause and fix in the
+       2026-07-25 entry. The size/lift/margin knobs listed here were NOT
+       touched — only the interaction was wrong.
+       Still offered but not built: alternate the two frames on a ~400ms loop
+       while held, so it reads as a repeating wave rather than a single pose.
 7. [ ] **Build a projects page.** List balancetheory and simpsonify now, with
        placeholder cards for what is coming. New route in `src/App.tsx`
        alongside the existing `/blog` and `/resume` ones (probably `/projects`).
@@ -68,6 +67,70 @@ Verified working, no action needed:
   (`default._domainkey`, 408 chars) and DMARC (`p=none`) all publish and were
   each confirmed through Cloudflare, Google and Quad9 resolvers plus both
   Vercel nameservers. Before this session only SPF existed.
+
+2026-07-25 (Coming Soon mobile)
+-------------------------------
+Summary
+Made the COMING SOON badge scale like an image on narrow screens, and made the
+ninja press-and-hold on touch instead of latching on the first tap.
+
+Details
+
+The badge (src/pages/Home.tsx)
+- Symptom: below ~414px the pill lost width, gained height and broke COMING /
+  SOON onto two lines. Measured before the fix: 320px viewport -> 272x111,
+  aspect 2.45, two lines. It was a fixed-size element in a flex column, so the
+  only thing that could give was the text.
+- Fix: every dimension of the badge — both paddings, the border radius, all
+  seven shadow offsets/blurs/spreads, the engraved text shadow and the 96px gap
+  beneath it — is now expressed in `em` off a single font-size on the outer
+  div, and the span no longer sets its own font-size. Scaling that one value
+  therefore scales the entire badge uniformly, which is what fixes the aspect
+  ratio by construction rather than by declaring one.
+- The font-size is `min(21px, calc((100vw - 48px) / 16.9))`. 16.9 is the
+  badge's measured full width in em; 48px is the page's 24px horizontal padding
+  doubled. So it renders at the approved 21px whenever there is room and
+  otherwise at exactly the size that fits. `white-space: nowrap` guarantees one
+  line. RE-MEASURE 16.9 if the wording, weight, tracking or padding changes.
+- No media query and no matchMedia hook: `min()`/`calc()` work in inline styles,
+  which is what made this fixable without moving the badge into index.css.
+- Verified by measuring the rendered page at 320/360/375/390/414/500/768/1280
+  (in same-origin iframes — headless Chrome clamps its own window to ~500px, so
+  window-size cannot test narrow layouts). Aspect ratio holds at 4.452-4.456
+  across every width, one line everywhere, never overflows, and >=24px of side
+  margin. Desktop is untouched: 354x79.5 at both 414 and 1280, identical to the
+  pre-change build measured by stashing the diff.
+
+The ninja (src/index.css, src/pages/Home.tsx)
+- Symptom George reported: on mobile the first tap raised the hand and it
+  stayed raised — later taps did nothing, so touch did not match desktop hover.
+- Root cause: `.avatar-wave:hover` was not gated by `(hover: hover)`. iOS grants
+  a tapped element a STICKY :hover that survives the release and persists until
+  something else is tapped, so the first tap latched the wave frame on and every
+  later tap was a no-op. The `:active` rule that was supposed to cover touch
+  never fired — Safari only applies :active to elements it considers clickable,
+  and this is a plain span.
+- Fix: hover rules moved inside `@media (hover: hover) and (pointer: fine)` so
+  they only apply to real pointers, and touch is driven by an `.is-raised`
+  class from React state — set on pointerDown, cleared on pointerUp,
+  pointerCancel and pointerLeave. Hold raises, release lowers, repeatably.
+  pointerCancel matters: the browser steals the gesture when a scroll starts,
+  and without it the hand would stay up for good.
+- Also added on `.avatar-wave`: `-webkit-touch-callout: none` (a long press on
+  an <img> otherwise opens iOS's Save Image sheet — likely on a hold gesture),
+  `-webkit-tap-highlight-color: transparent`, `touch-action: manipulation` (no
+  300ms double-tap-zoom wait), and `pointer-events: none` on the two frames so
+  the span owns the gesture and swapping frames mid-press cannot retarget it.
+- Verified with a 24-assertion probe firing real PointerEvents at the built
+  page: press raises and lifts, release lowers, the second/third/fourth press
+  all raise again (the reported bug), pointerCancel and pointerLeave both
+  lower, duplicate down/up events are idempotent, and six further press/release
+  cycles all behave. Note for anyone re-running it: CSS transitions do not
+  advance predictably under --virtual-time-budget and React's state flush is
+  not synchronous with dispatchEvent, so the probe disables transitions and
+  yields a tick before asserting. Both were mistaken for real failures first.
+  React derives onPointerLeave from `pointerout` + relatedTarget, so a directly
+  dispatched `pointerleave` never reaches the handler — test with pointerout.
 
 2026-07-25 (later)
 ------------------
