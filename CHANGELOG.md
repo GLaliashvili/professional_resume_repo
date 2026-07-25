@@ -15,11 +15,13 @@ Carried over from 2026-07-25. Tick these off and delete them from this section.
        this repo and might have served the committed output; Pages is now out
        of the serving path, so the risk is gone. Vercel builds from source
        (`buildCommand: vite build`). Removes a lot of minified diff noise.
-3. [ ] **Add a DMARC record** (none exists). Start in monitor mode:
-       `_dmarc TXT "v=DMARC1; p=none; rua=mailto:hi@iamgeorge.nl; fo=1"`.
-       Leave it at `p=none` for a few weeks of reports, then tighten to
-       `p=quarantine` and eventually `p=reject`. DKIM only started being
-       published on 2026-07-25, so do not enforce before confirming it passes.
+3. [ ] **Tighten DMARC from monitor to enforcing.** The record was added on
+       2026-07-25 as `_dmarc TXT "v=DMARC1; p=none; rua=mailto:hi@iamgeorge.nl;
+       fo=1"` — monitor only, it changes nothing on its own. Aggregate reports
+       now arrive at hi@ as daily XML. After a few weeks, if they show SPF and
+       DKIM consistently passing AND aligned, move `p=none` -> `p=quarantine`,
+       then later -> `p=reject`. Do not skip straight to reject: DKIM only
+       started publishing on 2026-07-25 and has no track record yet.
 4. [ ] **Decide the fate of the palette picker** on /balancetheory. It is
        currently live and public on desktop. Keep, or remove the three blocks
        banded `PALETTE PICKER — START/END` in the CSS, markup and script.
@@ -28,6 +30,10 @@ Verified working, no action needed:
 - Email round-trip through `hi@iamgeorge.nl` tested in both directions after
   the nameserver move — send and receive both confirmed by George on
   2026-07-25. The DNS migration did not disturb mail.
+- Mail authentication is complete as of 2026-07-25: SPF (`~all`), DKIM
+  (`default._domainkey`, 408 chars) and DMARC (`p=none`) all publish and were
+  each confirmed through Cloudflare, Google and Quad9 resolvers plus both
+  Vercel nameservers. Before this session only SPF existed.
 
 2026-07-25
 ----------
