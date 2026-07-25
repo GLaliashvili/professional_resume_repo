@@ -22,9 +22,10 @@ Carried over from 2026-07-25. Tick these off and delete them from this section.
        DKIM consistently passing AND aligned, move `p=none` -> `p=quarantine`,
        then later -> `p=reject`. Do not skip straight to reject: DKIM only
        started publishing on 2026-07-25 and has no track record yet.
-4. [ ] **Decide the fate of the palette picker** on /balancetheory. It is
-       currently live and public on desktop. Keep, or remove the three blocks
-       banded `PALETTE PICKER — START/END` in the CSS, markup and script.
+4. [x] **DONE 2026-07-25 — the palette picker stays, and is now on every
+       device.** George chose to keep it and open it to everyone through the
+       corner toggle, so the `@media (max-width: 720px)` rule that hid
+       `#picker` and `#picker-toggle` is gone. See the 2026-07-25 entry below.
 
 Backlog — features, not cleanup
 -------------------------------
@@ -67,6 +68,48 @@ Verified working, no action needed:
   (`default._domainkey`, 408 chars) and DMARC (`p=none`) all publish and were
   each confirmed through Cloudflare, Google and Quad9 resolvers plus both
   Vercel nameservers. Before this session only SPF existed.
+
+2026-07-25 (later)
+------------------
+Summary
+Opened the /balancetheory palette picker to every device — it was desktop-only.
+
+Details
+- Deleted the `@media (max-width: 720px) { #picker, #picker-toggle { display: none } }`
+  rule. Nothing else gated the picker: the script never checked the viewport, so
+  removing the hide was all that "enable it for everyone" required.
+- Mobile sizing added in its place, inside the same PALETTE PICKER band:
+  card width `min(268px, calc(100vw - 24px))` so it cannot overflow a 320px
+  phone, 12px type, 11px field spacing, and a 30px-tall range strip (desktop is
+  18px) so the native thumb is grabbable with a thumb. The sliders stay native
+  and take their colour from `accent-color`; the heavy custom thumb styling
+  under `.panel .range` is deliberately NOT reused — that is the axis panel's
+  look, and copying it would make the picker compete with the four axis sliders.
+- The card overlays the diagram's top axis while open. That is intentional: it
+  is closed by default and the toggle dismisses it, so it costs no permanent
+  vertical room — which matters because the mobile layout is tuned to fit on
+  one screen without scrolling.
+- The toggle already mirrored `#reset` in the opposite corner at the same 38px
+  size, so the mobile top row reads as a matched pair: palette left, reset right.
+- Verified with headless Chrome at 500x860 (the practical mobile width — Chrome
+  clamps below ~500px) with the picker forced open, and against a closed
+  baseline: the diagram geometry is byte-for-byte the same layout, so nothing
+  regressed for people who never open it.
+- Click/tap outside now dismisses the picker, on both desktop and mobile. One
+  `document` listener on `pointerdown` — not `click` — so it closes on the same
+  gesture that starts a drag on the diagram underneath, and so mouse, touch and
+  pen are all covered by a single path. Open/close moved into a `setOpen()`
+  helper so `aria-expanded` cannot drift out of step with the `hidden` attribute.
+  THE TRAP: the toggle must be excluded from the outside check. Without it the
+  toggle's own pointerdown closes the panel and its click immediately reopens
+  it, so tapping the icon to close looks like nothing happened. `#picker` is
+  excluded too, which also covers dragging a picker slider past the card edge —
+  the gesture began inside, and only pointerdown closes, never pointerup.
+  Verified headlessly with a 10-case probe (synthetic PointerEvents against the
+  real page): opens, stays open on pointerdown inside the card and on its own
+  sliders, closes on the diagram / an axis slider / the reset icon, reopens
+  after an outside close, closes from its own toggle with no bounce, and is a
+  no-op when already closed. All pass.
 
 2026-07-25
 ----------
