@@ -1,16 +1,120 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>ბალანსის ზედაპირი</title>
+<title>ბალანსის თეორია</title>
+<link rel="icon" href="/favicon.ico" sizes="any"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png"/>
+<link rel="apple-touch-icon" href="/favicon-180.png"/>
 <style>
+  /* ------------------------------------------------------------- palette
+     Single source of truth. The -rgb pairs exist so tints can be written as
+     rgba(var(--x-rgb), a) instead of repeating literal channel values, and the
+     SVG picks these up through CSS rules rather than hardcoded attributes —
+     so a recolour is only this block. Neutrals carry a hint of the accent hue
+     so the greys sit with it instead of fighting it. */
   :root {
-    --bg: #14120d;
-    --ink: #f4efe2;
-    --ink-faint: rgba(244, 239, 226, 0.38);
-    --accent: #ffb62b;
-    --accent-bright: #ffd34d;
-    --muted: #a39c8a;
+    /* hue 331 / lightness 54 / contrast 78 */
+    --bg: #130d10;
+    --ink: #f0eaed;
+    --ink-rgb: 240, 234, 237;
+    --ink-faint: rgba(var(--ink-rgb), 0.38);
+    --muted: #a9909c;
+    --hairline: #33282d;
+
+    --accent: #dc3887;
+    --accent-rgb: 220, 56, 135;
+    --accent-bright: #f27db6;
+
+    --hatch-opacity: 0.231;
     --doodle-font: 'Chalkboard SE', 'Comic Sans MS', 'Segoe Print', 'Bradley Hand', cursive;
   }
+
+  /* the diagram inherits the palette instead of carrying its own colours */
+  #axes    { fill: var(--ink); }
+  #labels  { fill: var(--muted); }
+  #hatch line { stroke: var(--accent); opacity: var(--hatch-opacity); }
+  #rhombus { stroke: var(--accent); }
+  .dot.vis { fill: var(--accent-bright); stroke: var(--accent); }
+  .dot.hit { fill: transparent; stroke: none; }
+
+  /* ======================== PALETTE PICKER — START ===========================
+     Desktop only, collapsed by default, opened with the corner toggle. To pull
+     it out entirely delete this CSS block, the #picker-toggle + #picker markup,
+     and the script block under the same banner. Nothing else references them. */
+
+  /* mirrors #reset in the opposite corner */
+  #picker-toggle {
+    position: fixed;
+    top: calc(12px + env(safe-area-inset-top, 0px));
+    left: calc(12px + env(safe-area-inset-left, 0px));
+    z-index: 21;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    color: var(--accent-bright);
+    background: transparent;
+    border: 1.6px solid var(--accent);
+    border-radius: 46% 54% 58% 42% / 48% 52% 48% 52%; /* hand-drawn circle */
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #picker-toggle:hover { color: var(--muted); border-color: var(--ink-faint); }
+  #picker-toggle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.25);
+  }
+  #picker-toggle svg {
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  #picker-toggle svg circle { fill: currentColor; stroke: none; }
+
+  #picker {
+    position: fixed;
+    /* clears the toggle so the card never sits on top of it */
+    top: calc(60px + env(safe-area-inset-top, 0px));
+    left: calc(12px + env(safe-area-inset-left, 0px));
+    z-index: 20;
+    width: 232px;
+    padding: 12px 14px 14px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid var(--ink-faint);
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
+    font: 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--ink);
+    letter-spacing: 0;
+  }
+  #picker[hidden] { display: none; }
+  #picker h4 {
+    margin: 0 0 8px;
+    font: inherit;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  #picker .fld { margin-bottom: 8px; }
+  #picker .fld:last-child { margin-bottom: 0; }
+  #picker .fld > span { display: flex; justify-content: space-between; margin-bottom: 2px; }
+  #picker input[type="range"] {
+    width: 100%;
+    margin: 0;
+    height: 18px;
+    accent-color: var(--accent);
+  }
+  @media (max-width: 720px) {
+    #picker, #picker-toggle { display: none; }
+  }
+  /* ========================= PALETTE PICKER — END ============================ */
 
   html, body { height: 100%; }
 
@@ -87,7 +191,7 @@
     font-family: var(--doodle-font);
     font-size: clamp(15px, 2.6vmin, 20px);
     color: var(--accent-bright);
-    background: rgba(255, 182, 43, 0.06);
+    background: rgba(var(--accent-rgb), 0.06);
     border: 1.6px solid var(--ink-faint);
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     padding: 3px 4px;
@@ -95,7 +199,7 @@
   }
   .panel .num:focus-visible {
     border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(255, 182, 43, 0.25);
+    box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.25);
   }
   .panel .num::-webkit-outer-spin-button,
   .panel .num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
@@ -111,8 +215,8 @@
     font-family: var(--doodle-font);
     font-size: clamp(13px, 2.2vmin, 16px);
     letter-spacing: 0.1em;
-    /* yellow is the interactive colour across the page: this rests bright and
-       recedes on hover */
+    /* the accent is the interactive colour across the page: this rests
+       bright and recedes on hover */
     color: var(--accent-bright);
     background: transparent;
     border: 1.6px solid var(--accent);
@@ -128,7 +232,7 @@
   #reset:focus-visible {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(255, 182, 43, 0.25);
+    box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.25);
   }
 
   .footer {
@@ -145,7 +249,7 @@
     width: 100%;
     margin: 0;
     border: none;
-    border-top: 1px solid #33302a;
+    border-top: 1px solid var(--hairline);
   }
   .title {
     font-size: clamp(10px, 1.6vmin, 12px);
@@ -251,7 +355,7 @@
       font-size: 18px;
       line-height: 1.1;
       color: var(--accent-bright);
-      background: rgba(255, 182, 43, 0.06);
+      background: rgba(var(--accent-rgb), 0.06);
       border: 1.6px solid var(--ink-faint);
       border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
       padding: 2px 6px;
@@ -273,7 +377,7 @@
     .panel .range::-webkit-slider-runnable-track {
       height: 7px;
       border-radius: 6px;
-      background: rgba(244, 239, 226, 0.12);
+      background: rgba(var(--ink-rgb), 0.12);
       border: 1.2px solid var(--ink-faint);
     }
     .panel .range::-webkit-slider-thumb {
@@ -284,12 +388,12 @@
       border-radius: 50%;
       background: var(--accent-bright);
       border: 2.6px solid var(--accent);
-      box-shadow: 0 0 0 6px rgba(255, 182, 43, 0.08);
+      box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0.08);
     }
     .panel .range::-moz-range-track {
       height: 7px;
       border-radius: 6px;
-      background: rgba(244, 239, 226, 0.12);
+      background: rgba(var(--ink-rgb), 0.12);
       border: 1.2px solid var(--ink-faint);
     }
     .panel .range::-moz-range-thumb {
@@ -298,10 +402,10 @@
       border-radius: 50%;
       background: var(--accent-bright);
       border: 2.6px solid var(--accent);
-      box-shadow: 0 0 0 6px rgba(255, 182, 43, 0.08);
+      box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0.08);
     }
-    .panel .range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 6px rgba(255, 182, 43, 0.22); }
-    .panel .range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 6px rgba(255, 182, 43, 0.22); }
+    .panel .range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0.22); }
+    .panel .range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0.22); }
 
     .footer {
       padding-top: 14px;
@@ -318,18 +422,46 @@
   }
 </style>
 
+<!-- ===================== PALETTE PICKER — START ===================== -->
+<button id="picker-toggle" type="button" title="ფერები" aria-label="ფერები"
+        aria-expanded="false" aria-controls="picker">
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="M12 2.5a9.5 9.5 0 1 0 0 19 2.4 2.4 0 0 0 1.9-3.85 2.4 2.4 0 0 1 1.9-3.85h1.95A4.75 4.75 0 0 0 21.5 9C21.5 5.4 17.25 2.5 12 2.5Z"/>
+    <circle cx="7.4" cy="11.3" r="1.15"/>
+    <circle cx="11.4" cy="7.4" r="1.15"/>
+    <circle cx="16" cy="9.9" r="1.15"/>
+  </svg>
+</button>
+
+<div id="picker" hidden>
+  <h4>palette</h4>
+  <div class="fld">
+    <span>accent hue<b id="p-hue-v"></b></span>
+    <input id="p-hue" type="range" min="0" max="360" step="1" value="331"/>
+  </div>
+  <div class="fld">
+    <span>accent lightness<b id="p-lit-v"></b></span>
+    <input id="p-lit" type="range" min="30" max="82" step="1" value="54"/>
+  </div>
+  <div class="fld">
+    <span>contrast<b id="p-con-v"></b></span>
+    <input id="p-con" type="range" min="0" max="100" step="1" value="78"/>
+  </div>
+</div>
+<!-- ====================== PALETTE PICKER — END ====================== -->
+
 <div class="layout">
   <div class="stage" id="stage">
-    <svg id="svg" viewBox="0 0 1300 1120" aria-label="ბალანსის ზედაპირი: სხეული, საქმე, კავშირები, საზრისი">
+    <svg id="svg" viewBox="0 0 1300 1120" aria-label="ბალანსის თეორია: სხეული, საქმე, კავშირები, საზრისი">
       <defs>
         <pattern id="hatch" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="16" stroke="#ffb62b" stroke-width="2" stroke-linecap="round" opacity="0.13"/>
+          <line x1="0" y1="0" x2="0" y2="16" stroke-width="2" stroke-linecap="round"/>
         </pattern>
       </defs>
       <polygon id="fill" fill="url(#hatch)" stroke="none"/>
-      <g id="axes" fill="#f4efe2" stroke="none"></g>
-      <g id="labels" fill="#a39c8a" font-size="26" letter-spacing="2" style="font-family: var(--doodle-font);"></g>
-      <path id="rhombus" fill="none" stroke="#ffb62b" stroke-width="3.4"
+      <g id="axes" stroke="none"></g>
+      <g id="labels" font-size="26" letter-spacing="2" style="font-family: var(--doodle-font);"></g>
+      <path id="rhombus" fill="none" stroke-width="3.4"
             stroke-dasharray="14 10" stroke-linecap="round" stroke-linejoin="round"/>
       <g id="dots"></g>
     </svg>
@@ -395,10 +527,10 @@
   // mobile packs ~1.5x fewer screen pixels per viewBox unit, so every drawn
   // weight is scaled by roughly that factor to look identical in the hand
   var DESKTOP = { W: 1300, H: 1120, CX: 650, CY: 560, L: 490, PAD: 28,
-                  fontSize: 26, dotR: 12, grab: 70, pen: 6.5, edge: 3.4,
+                  fontSize: 26, dotR: 12, grab: 70, pen: 4.8, edge: 3.4,
                   dash: '14 10', sideLabels: 'across' };
   var MOBILE  = { W: 1000, H: 1130, CX: 500, CY: 560, L: 480, PAD: 40,
-                  fontSize: 40, dotR: 18, grab: 130, pen: 10, edge: 5.2,
+                  fontSize: 40, dotR: 18, grab: 130, pen: 7.4, edge: 5.2,
                   dash: '21 15', sideLabels: 'above' };
 
   var mq = window.matchMedia('(max-width: 720px)');
@@ -540,11 +672,12 @@
 
     var dots = '';
     for (var j = 0; j < 4; j++) {
-      // invisible halo first: a generous touch target around every handle
-      dots += '<circle class="dot" data-dot="' + j + '" cx="' + pts[j][0] + '" cy="' + pts[j][1] +
-              '" r="' + (G.grab * 0.6) + '" fill="transparent" stroke="none"/>';
-      dots += '<circle class="dot" data-dot="' + j + '" cx="' + pts[j][0] + '" cy="' + pts[j][1] +
-              '" r="' + G.dotR + '" fill="#ffd34d" stroke="#ffb62b" stroke-width="' + (G.dotR / 4) + '"/>';
+      // invisible halo first: a generous touch target around every handle.
+      // colours come from the .dot.hit / .dot.vis rules in the palette block.
+      dots += '<circle class="dot hit" data-dot="' + j + '" cx="' + pts[j][0] + '" cy="' + pts[j][1] +
+              '" r="' + (G.grab * 0.6) + '"/>';
+      dots += '<circle class="dot vis" data-dot="' + j + '" cx="' + pts[j][0] + '" cy="' + pts[j][1] +
+              '" r="' + G.dotR + '" stroke-width="' + (G.dotR / 4) + '"/>';
     }
     gDots.innerHTML = dots;
   }
@@ -677,3 +810,82 @@
   drawShape();
 })();
 </script>
+
+<!-- ===================== PALETTE PICKER — START =====================
+     Drives the :root custom properties live. Because every colour on the page
+     resolves through those properties (including the SVG), nothing needs to be
+     redrawn. Delete this block plus the matching CSS and markup to remove. -->
+<script>
+(function () {
+  'use strict';
+
+  var hue = document.getElementById('p-hue');
+  if (!hue) return;
+  var lit = document.getElementById('p-lit');
+  var con = document.getElementById('p-con');
+  var root = document.documentElement;
+
+  function hslToRgb(h, s, l) {
+    h = ((h % 360) + 360) % 360; s /= 100; l /= 100;
+    var c = (1 - Math.abs(2 * l - 1)) * s;
+    var x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+    var m = l - c / 2, r, g, b;
+    if (h < 60)       { r = c; g = x; b = 0; }
+    else if (h < 120) { r = x; g = c; b = 0; }
+    else if (h < 180) { r = 0; g = c; b = x; }
+    else if (h < 240) { r = 0; g = x; b = c; }
+    else if (h < 300) { r = x; g = 0; b = c; }
+    else              { r = c; g = 0; b = x; }
+    return [Math.round((r + m) * 255), Math.round((g + m) * 255), Math.round((b + m) * 255)];
+  }
+
+  function hex(c) {
+    return '#' + c.map(function (v) { return ('0' + v.toString(16)).slice(-2); }).join('');
+  }
+
+  function apply() {
+    var H = +hue.value, L = +lit.value, T = +con.value / 100;
+
+    var accent = hslToRgb(H, 70, L);
+    var bright = hslToRgb(H, 82, Math.min(92, L + 18));
+
+    // Neutrals share the accent's hue so the greys belong to the same family.
+    // T = 0 gives pure #000 / #fff with no tint at all; T = 1 is fully "off".
+    var bg       = hslToRgb(H, 24 * T, 8 * T);
+    var ink      = hslToRgb(H, 20 * T, 100 - 9 * T);
+    var muted    = hslToRgb(H, 16 * T, 52 + 12 * T);
+    var hairline = hslToRgb(H, 16 * T, 10 + 10 * T);
+
+    // a darker accent needs a denser hatch to stay visible, so tie them together
+    var hatch = (0.30 - (L - 30) * 0.00288).toFixed(3);
+
+    var set = function (n, v) { root.style.setProperty(n, v); };
+    set('--accent', hex(accent));
+    set('--accent-rgb', accent.join(', '));
+    set('--accent-bright', hex(bright));
+    set('--bg', hex(bg));
+    set('--ink', hex(ink));
+    set('--ink-rgb', ink.join(', '));
+    set('--muted', hex(muted));
+    set('--hairline', hex(hairline));
+    set('--hatch-opacity', hatch);
+
+    document.getElementById('p-hue-v').textContent = H + '°';
+    document.getElementById('p-lit-v').textContent = L + '%';
+    document.getElementById('p-con-v').textContent = con.value;
+  }
+
+  [hue, lit, con].forEach(function (el) { el.addEventListener('input', apply); });
+  apply();
+
+  // ---------- open / close ----------
+  var panel = document.getElementById('picker');
+  var toggle = document.getElementById('picker-toggle');
+  toggle.addEventListener('click', function () {
+    var open = panel.hasAttribute('hidden');
+    if (open) panel.removeAttribute('hidden'); else panel.setAttribute('hidden', '');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+})();
+</script>
+<!-- ====================== PALETTE PICKER — END ====================== -->
