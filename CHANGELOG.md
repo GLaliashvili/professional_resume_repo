@@ -4,6 +4,9 @@ Change Log
 OPEN — start here next session
 ------------------------------
 Carried over from 2026-07-25. Tick these off and delete them from this section.
+Four items closed on 2026-07-25 (palette picker everywhere + outside-tap
+dismiss, badge scaling, ninja press-and-hold, ninja frames/baseline/greeting);
+they are gone from this list and written up in the dated entries below.
 
 1. [ ] **Delete the Cloudflare Pages project and DNS zone.** `resume-8h2` under
        Workers & Pages, then the `iamgeorge.nl` zone itself. Nothing routes to
@@ -22,42 +25,25 @@ Carried over from 2026-07-25. Tick these off and delete them from this section.
        DKIM consistently passing AND aligned, move `p=none` -> `p=quarantine`,
        then later -> `p=reject`. Do not skip straight to reject: DKIM only
        started publishing on 2026-07-25 and has no track record yet.
-4. [x] **DONE 2026-07-25 — the palette picker stays, and is now on every
-       device.** George chose to keep it and open it to everyone through the
-       corner toggle, so the `@media (max-width: 720px)` rule that hid
-       `#picker` and `#picker-toggle` is gone. See the 2026-07-25 entry below.
 
 Backlog — features, not cleanup
 -------------------------------
 
-5. [x] **DONE 2026-07-25 — the COMING SOON badge scales like an image.** That
-       was the reported symptom: below ~414px the pill squashed inward, grew
-       taller and split the text across two lines. It is now uniformly scaled
-       with a fixed aspect ratio and can never wrap. Details in the 2026-07-25
-       entry below. The old note here proposed a breakpoint or a matchMedia
-       hook because inline styles cannot hold a media query — that turned out
-       to be unnecessary: `min()`/`calc()` work fine inline, and proportional
-       scaling was the correct answer for this element anyway.
-       DELIBERATELY LEFT ALONE, checked and fine at 320px: the 17px body copy
-       and the 640px max-width on the intro block.
-6. [x] **DONE 2026-07-25 — the ninja is press-and-hold on touch.** George's
-       specifics, given on 2026-07-25: one tap raised the hand and every later
-       tap did nothing, which did not match desktop. Now the hand is up for the
-       duration of a press and drops on release. Root cause and fix in the
-       2026-07-25 entry. The size/lift/margin knobs listed here were NOT
-       touched — only the interaction was wrong.
-       Still offered but not built: alternate the two frames on a ~400ms loop
-       while held, so it reads as a repeating wave rather than a single pose.
-7. [ ] **Build a projects page.** List balancetheory and simpsonify now, with
+4. [ ] **Build a projects page.** List balancetheory and simpsonify now, with
        placeholder cards for what is coming. New route in `src/App.tsx`
        alongside the existing `/blog` and `/resume` ones (probably `/projects`).
        balancetheory lives at `/balancetheory` in this repo; simpsonify is a
        separate property (George owns simpsonify.us).
-8. [ ] **Point Coming Soon at the projects page instead of the resume.**
-       `src/pages/Home.tsx` currently ends with "feel free to visit my
-       [professional resume]" linking to `https://resume.iamgeorge.nl/`
-       (around line 113). That link becomes the projects page once #7 exists.
-       Depends on #7 — do not do this one first or the link goes nowhere.
+5. [ ] **Point Coming Soon at the projects page instead of the resume.**
+       `src/pages/Home.tsx` ends with "feel free to visit my [professional
+       resume]" linking to `https://resume.iamgeorge.nl/`. That link becomes
+       the projects page once #4 exists. Depends on #4 — do not do this one
+       first or the link goes nowhere.
+6. [ ] **Optional, offered but never asked for:** alternate the ninja's two
+       frames on a ~400ms loop while held, so it reads as a repeating wave
+       rather than a single pose change. Everything needed is in place — both
+       frames are preloaded and registered, and the swap is already a pure
+       opacity crossfade with no transform to fight.
 
 Verified working, no action needed:
 - Email round-trip through `hi@iamgeorge.nl` tested in both directions after
