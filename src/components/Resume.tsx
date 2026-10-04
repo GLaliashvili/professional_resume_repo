@@ -12,7 +12,7 @@ export function Resume() {
       {/* Header Section */}
       <div className="text-center mb-8">
         <h1 className="mb-2">George Laliashvili</h1>
-        <p className="text-muted-foreground mb-4">Product Leader & Ex-Founder</p>
+        <p className="text-muted-foreground mb-4">Product Leader & Ex-Founder | AI Product & Governance in Regulated Fintech</p>
         <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
           <a 
             href="mailto:hi@iamgeorge.nl" 
@@ -52,10 +52,10 @@ export function Resume() {
       <section className="mb-16">
         <h2 className="mb-4 text-primary">Summary</h2>
         <p className="text-muted-foreground leading-relaxed">
-          I am a product leader with over 12 years of experience building and growing SaaS, marketplaces, and consumer apps from the ground up.
+          I work on AI products inside financial regulation, treating MiFID II and GDPR as design inputs rather than a last-minute veto. I also build the unglamorous layer around AI tooling — defining what agents may write, where the data boundary sits, and which decisions stay human.
         </p>
         <p className="text-muted-foreground leading-relaxed mt-4">
-        My background spans scale-ups and enterprises across revenue growth management, productivity, and sustainability areas. I build with a problem-first approach, diagnose with data, and lead by focusing on small wins that shape the overall user experience.
+          Twelve years in product across B2B and B2C SaaS, marketplaces and consumer tech, including founding and scaling a productivity browser to 120K users. I work problem-first, diagnose with data, and prioritize compounding outcomes over activities.
         </p>
       </section>
 
@@ -65,6 +65,26 @@ export function Resume() {
         
         <div className="space-y-6">
          
+          {/* BUX */}
+          <Card className="p-6">
+            <div className="flex justify-between items-start mb-0.5">
+              <h3 className="text-primary">BUX</h3>
+              <CompanyLogo companyName="BUX" logoUrl="https://i.imgur.com/X5IRnbe.png" companyUrl="https://getbux.com" />
+            </div>
+            <div className="flex justify-between items-start mb-0">
+              <div>
+                <h4 className="text-primary">Senior Product Manager</h4>
+              </div>
+              <span className="text-sm text-muted-foreground">May 2026 - Present</span>
+            </div>
+            <ul className="resume-list space-y-2 text-muted-foreground">
+              <li>PM for BUX Investing and AI products.</li>
+              <li>Leading AI initiatives, both user-facing and internal.</li>
+              <li>Aligning engineering, design, data, and compliance in a regulated fintech environment.</li>
+              <li>Co-leading the transition of BUX from an Investing to a Wealth Building app.</li>
+            </ul>
+          </Card>
+
           {/* Scaler */}
           <Card className="p-6">
             <div className="flex justify-between items-start mb-0.5">
@@ -75,13 +95,13 @@ export function Resume() {
               <div>
                 <h4 className="text-primary">Senior Product Manager</h4>
               </div>
-              <span className="text-sm text-muted-foreground">Oct 2024 - Present</span>
+              <span className="text-sm text-muted-foreground">Oct 2024 - May 2026</span>
             </div>
             <ul className="resume-list space-y-2 text-muted-foreground">
-              <li>Leading structured product scoring to boost clarity and consistency to prioritization.</li>
-              <li>Working closely with high-impact clients to translate critical ESG reporting needs into product outcomes.</li>
-              <li>Guiding cross-functional teams focused on data collection and analytics.</li>
-              <li>Building scalable frameworks to strengthen regulatory compliance across multiregional portfolios.</li>
+              <li>Led structured product scoring, bringing clarity and consistency to prioritization.</li>
+              <li>Worked closely with high-impact clients to translate critical ESG reporting needs into product outcomes.</li>
+              <li>Guided cross-functional teams focused on data collection and analytics.</li>
+              <li>Built scalable frameworks to strengthen regulatory compliance across multi-regional portfolios.</li>
             </ul>
           </Card>
 
@@ -143,8 +163,8 @@ export function Resume() {
                       <span className="text-sm text-muted-foreground">May 2018 - Jan 2022</span>
                     </div>
                     <ul className="resume-list space-y-2 text-muted-foreground">
-                      <li>Launched beta and generated $120K in the first 3 months.</li>
-                      <li>Built 70% of high-impact features in first 12 months, boositng NPS from 34 to 66.</li>
+                      <li>Launched beta and generated $120K in the first 3 months; scaled to 120K users.</li>
+                      <li>Built 70% of high-impact features in first 12 months, boosting NPS from 34 to 66.</li>
                       <li>Grew user base 3x utilizing network effect with social features (shared workspaces).</li>
                       <li>Led technical migration from ElectronJS to Chromium.</li>
                       <li>Increased activation rate by 40% through UX experimentation and A/B testing.</li>
@@ -177,7 +197,7 @@ export function Resume() {
                       <span className="text-sm text-muted-foreground">Apr 2016 - May 2018</span>
                     </div>
                     <ul className="resume-list space-y-2 text-muted-foreground">
-                      <li>Built and launched an international mentors' network platform; (90 experts) and co-working space for 140+ entrepreneurs.</li>
+                      <li>Built an international mentor network (90 experts) and a co-working space for 140+ entrepreneurs.</li>
                       <li>Designed and ran a pre-acceleration program; 8 of 30 companies raised $4.3M post-program.</li>
                       <li>Led projects and programs facilitating direct foreign investments in local tech scale-ups.</li>
                     </ul>
@@ -235,10 +255,10 @@ export function Resume() {
               <span className="text-sm text-muted-foreground">Feb 2011 - May 2014</span>
             </div>
             <ul className="resume-list space-y-2 text-muted-foreground">
-              <li>Developed and launched 3 entertainment product.</li>
+              <li>Developed and launched 3 entertainment products.</li>
               <li>Led market research and customer feedback to inform product strategy.</li>
               <li>Grew monthly events from 0 to 42 in 4 months.</li>
-              <li>Helped make Robocity the N1 most visited birthday venue in Georgia in 6 months.</li>
+              <li>Helped make Robocity the #1 most-visited birthday venue in Georgia in 6 months.</li>
             </ul>
           </Card>
 
@@ -267,16 +287,6 @@ export function Resume() {
         <h2 className="mb-6 text-primary">Certifications</h2>
         <div className="space-y-4">
           
-          <Card className="p-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="text-primary">Emergency Response Officer</h3>
-                <p className="text-muted-foreground">BHVNederland</p>
-              </div>
-              <span className="text-sm text-muted-foreground">Jul 2025</span>
-            </div>
-          </Card>
-
           <Card className="p-6">
             <div className="flex justify-between items-start">
               <div>
@@ -324,30 +334,30 @@ export function Resume() {
             <div className="flex flex-wrap gap-2">
               
               <Badge variant="secondary">Product strategy</Badge>
-              <Badge variant="secondary">Vision development</Badge>
               <Badge variant="secondary">Go-to-market strategy</Badge>
               <Badge variant="secondary">Customer discovery</Badge>
               <Badge variant="secondary">Product-led growth (PLG)</Badge>
-              <Badge variant="secondary">Monetization models</Badge>
               <Badge variant="secondary">Monetization strategy</Badge>
-              <Badge variant="secondary">Revenue optimization</Badge>
-              <Badge variant="secondary">Revenue management</Badge>
-              <Badge variant="secondary">Innovation</Badge>
               <Badge variant="secondary">Roadmapping</Badge>
-              <Badge variant="secondary">SEO</Badge>
               <Badge variant="secondary">User acquisition</Badge>
-              <Badge variant="secondary">Change management</Badge>
-              <Badge variant="secondary">Conflict management</Badge>
               <Badge variant="secondary">Stakeholder management</Badge>
               <Badge variant="secondary">Public speaking</Badge>
               <Badge variant="secondary">Cross-functional leadership</Badge>
               <Badge variant="secondary">Mentorship</Badge>
-              <Badge variant="secondary">Collaboration</Badge>
-              <Badge variant="secondary">Teamwork</Badge>
               <Badge variant="secondary">Product management</Badge>
               <Badge variant="secondary">Data analysis</Badge>
               <Badge variant="secondary">Data-driven frameworks</Badge>
               <Badge variant="secondary">User Experience</Badge>
+              <Badge variant="secondary">AI Governance</Badge>
+              <Badge variant="secondary">AI Product Management</Badge>
+              <Badge variant="secondary">Financial Regulation</Badge>
+              <Badge variant="secondary">MiFID II</Badge>
+              <Badge variant="secondary">Regulatory Compliance</Badge>
+              <Badge variant="secondary">RegTech</Badge>
+              <Badge variant="secondary">GDPR</Badge>
+              <Badge variant="secondary">Fintech</Badge>
+              <Badge variant="secondary">Product Discovery</Badge>
+              <Badge variant="secondary">Product Operations</Badge>
               
 
               {/*
@@ -373,13 +383,7 @@ export function Resume() {
               <Badge variant="secondary">Data querying (SQL)</Badge>
               <Badge variant="secondary">A/B testing</Badge>
               <Badge variant="secondary">Experimentation frameworks</Badge>
-              <Badge variant="secondary">Google Analytics</Badge>
-              <Badge variant="secondary">Segment</Badge>
-              <Badge variant="secondary">Tableau</Badge>
-              <Badge variant="secondary">Looker</Badge>
               <Badge variant="secondary">Posthog</Badge>
-              <Badge variant="secondary">Scrum</Badge>
-              <Badge variant="secondary">Excel/Google Sheets (advanced)</Badge>
               <Badge variant="secondary">Figma</Badge>
               <Badge variant="secondary">No-code prototyping</Badge>
               <Badge variant="secondary">Low-code MVPs</Badge>
@@ -389,13 +393,14 @@ export function Resume() {
               <Badge variant="secondary">n8n</Badge>
               <Badge variant="secondary">Claude Code</Badge>
               <Badge variant="secondary">AI Agentic Workflows</Badge>
-              <Badge variant="secondary">Webflow</Badge>
-              <Badge variant="secondary">CMS</Badge>
               <Badge variant="secondary">Jira</Badge>
               <Badge variant="secondary">Linear</Badge>
               <Badge variant="secondary">Confluence</Badge>
               <Badge variant="secondary">Amplitude</Badge>
               <Badge variant="secondary">Mixpanel</Badge>
+              <Badge variant="secondary">Technical Writing</Badge>
+              <Badge variant="secondary">Data Governance</Badge>
+              <Badge variant="secondary">Snowflake</Badge>
               
               {/*
               <Badge variant="secondary">Data querying</Badge>
